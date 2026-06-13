@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/ListResult.json",
+  "title": "ListResult",
+  "type": "object",
+  "required": [
+    "results",
+    "next_page_token"
+  ],
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_page_token": {
+      "description": "Optional token for fetching the next page of results. Present when more results are available.",
+      "type": "string",
+      "nullable": true
+    }
+  }
+}

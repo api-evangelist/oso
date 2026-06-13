@@ -1,0 +1,38 @@
+{
+  "operationId": "delete_facts",
+  "path": "/facts",
+  "method": "DELETE",
+  "description": "Deletes a fact. Does not throw an error when the fact is not found.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"deletes\": [<fact>]}]`.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Delete specific fact\nawait oso.delete([\n  \"has_role\", \n  { type: \"User\", id: \"alice\" }, \n  \"maintainer\", \n  { type: \"Repository\", id: \"anvils\" }\n]);\n\n// Delete using patterns (null = wildcard)\nawait oso.delete([\"has_role\", { type: \"User\", id: \"alice\" }, null, null]); // All roles for alice\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Delete specific fact\nuser = Value(\"User\", \"alice\")\nrepo = Value(\"Repository\", \"anvils\")\noso.delete((\"has_role\", user, \"maintainer\", repo))\n\n# Delete using patterns\noso.delete((\"has_role\", user, None, None))  # All roles for user\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Delete specific fact\nuser := oso.NewValue(\"User\", \"alice\")\nrepo := oso.NewValue(\"Repository\", \"anvils\")\nerr := osoClient.Delete(oso.NewFact(\"has_role\", user, oso.String(\"maintainer\"), repo))\n\n// Delete using patterns\nerr = osoClient.Delete(oso.NewFactPattern(\n  \"has_role\", \n  user, \n  nil,  // Any role\n  oso.NewValueOfType(\"Repository\")  // Any repo\n))\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Delete specific fact\n            Value user = new Value(\"User\", \"alice\");\n            Value repo = new Value(\"Repository\", \"anvils\");\n            oso.delete(\"has_role\", user, \"maintainer\", repo);\n            \n            // Delete using patterns (null = wildcard)\n            oso.delete(\"has_role\", user, null, null);  // All roles for user\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Delete specific fact\nuser = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nrepo = OsoCloud::Value.new(type: \"Repository\", id: \"anvils\")\noso.delete(\"has_role\", user, \"maintainer\", repo)\n\n# Delete using patterns (nil = wildcard)\noso.delete(\"has_role\", user, nil, nil)  # All roles for user\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Delete specific fact\nvar user = new Value(\"User\", \"alice\");\nvar repo = new Value(\"Repository\", \"anvils\");\nawait oso.Delete(\"has_role\", user, \"maintainer\", repo);\n\n// Delete using patterns (null = wildcard)\nawait oso.Delete(\"has_role\", user, null, null);  // All roles for user\n"
+    }
+  ]
+}

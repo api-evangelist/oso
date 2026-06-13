@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/PolicyError.json",
+  "title": "PolicyError",
+  "description": "Error report for a failed Polar policy test, to be displayed to user. Sent to `oso-cloud` CLI as JSON.",
+  "type": "object",
+  "required": [
+    "error_type",
+    "message"
+  ],
+  "properties": {
+    "error_type": {
+      "description": "Type of error encountered.",
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PolicyFailure"
+        }
+      ]
+    },
+    "message": {
+      "description": "Error message to display to the user.",
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/AuthorizeResourcesResult.json",
+  "title": "AuthorizeResourcesResult",
+  "type": "object",
+  "required": [
+    "results"
+  ],
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Value"
+      }
+    }
+  }
+}

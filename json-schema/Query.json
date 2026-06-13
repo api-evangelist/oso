@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/Query.json",
+  "title": "Query",
+  "description": "A generic query comprising 1+ predicates conjuncted together.",
+  "type": "object",
+  "required": [
+    "calls",
+    "constraints",
+    "context_facts",
+    "predicate"
+  ],
+  "properties": {
+    "predicate": {
+      "description": "Predicate name and variable names.\n\nINVARIANT: all variable names must exist in `constraints`. This ensures that all variables at least have a type.",
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2
+    },
+    "calls": {
+      "description": "Predicate name and variable names.\n\nINVARIANT: all variable names must exist in `constraints`. This ensures that all variables at least have a type.",
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "maxItems": 2,
+        "minItems": 2
+      }
+    },
+    "constraints": {
+      "description": "Map of variable names to their type and value(s). Every variable is at least typed and may also be constrained to a set of values.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/Constraint"
+      }
+    },
+    "context_facts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ConcreteFact"
+      }
+    }
+  }
+}

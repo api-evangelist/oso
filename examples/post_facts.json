@@ -1,0 +1,38 @@
+{
+  "operationId": "post_facts",
+  "path": "/facts",
+  "method": "POST",
+  "description": "Adds a new fact.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"inserts\": [<fact>]}]`.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Insert a single fact\nawait oso.insert([\n  \"has_role\", \n  { type: \"User\", id: \"alice\" }, \n  \"maintainer\", \n  { type: \"Repository\", id: \"anvils\" }\n]);\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Insert a single fact\nuser = Value(\"User\", \"alice\")\nrepo = Value(\"Repository\", \"anvils\")\noso.insert((\"has_role\", user, \"maintainer\", repo))\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n    // Insert a single fact\n    alice := oso.NewValue(\"User\", \"alice\")\n    repo := oso.NewValue(\"Repository\", \"anvils\")\n    err := osoClient.Insert(oso.NewFact(\"has_role\", alice, oso.String(\"maintainer\"), repo))\n    if err != nil {\n        log.Fatal(err)\n    }\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Insert a single fact\n            Value user = new Value(\"User\", \"alice\");\n            Value repo = new Value(\"Repository\", \"anvils\");\n            oso.insert(\"has_role\", user, \"maintainer\", repo);\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Insert a single fact\nuser = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nrepo = OsoCloud::Value.new(type: \"Repository\", id: \"anvils\")\noso.tell(\"has_role\", user, \"maintainer\", repo)\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Insert a single fact\nvar user = new Value(\"User\", \"alice\");\nvar repo = new Value(\"Repository\", \"anvils\");\nawait oso.Insert(\"has_role\", user, \"maintainer\", repo);\n"
+    }
+  ]
+}

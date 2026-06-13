@@ -40,6 +40,8 @@ apis:
         url: https://www.osohq.com/docs
       - type: OpenAPI
         url: https://www.osohq.com/docs/reference/api
+      - type: OpenAPI
+        url: openapi/oso-authorization-openapi.yml
       - type: Authentication
         url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
     contact:

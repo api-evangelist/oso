@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/ConcreteFact.json",
+  "title": "ConcreteFact",
+  "description": "A specific piece of authorization-relevant data, ie: a fact.\n\n`ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].",
+  "type": "object",
+  "required": [
+    "args",
+    "predicate"
+  ],
+  "properties": {
+    "predicate": {
+      "type": "string"
+    },
+    "args": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/TypedId"
+      }
+    }
+  }
+}

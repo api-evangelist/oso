@@ -1,0 +1,38 @@
+{
+  "operationId": "get_policy_metadata",
+  "path": "/policy_metadata",
+  "method": "GET",
+  "description": "Returns metadata about the currently active policy.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Get policy metadata\nconst metadata = await oso.getPolicyMetadata();\n\n// Access resource information\nconsole.log(metadata.resources.keys());        // List all resources\nconsole.log(metadata.resources.get(\"Repository\")); // Get specific resource metadata\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Get policy metadata\nmetadata = oso.get_policy_metadata()\n\n# Access resource information\nprint(metadata.resources.keys())               # List all resources\nprint(metadata.resources[\"Repository\"])        # Get specific resource metadata\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Get policy metadata\n    metadata, err := osoClient.GetPolicyMetadata()\n    if err != nil {\n        log.Fatal(err)\n    }\n}\n\n// Access resource information\nfor resourceName := range metadata.Resources {\n    fmt.Printf(\"Resource: %s\\n\", resourceName)\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n\n        // Get policy metadata\n        try {\n            PolicyMetadata metadata = oso.getPolicyMetadata();\n            \n            // Access resource information\n            System.out.println(metadata.getResources().keySet());\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error getting policy metadata: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Get policy metadata\nmetadata = oso.get_policy_metadata\n\n# Access resource information\nputs metadata.resources.keys\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Get policy metadata\nvar metadata = await oso.GetPolicyMetadata();\n\n// Access resource information\nConsole.WriteLine(string.Join(\", \", metadata.Resources.Keys));\n"
+    }
+  ]
+}

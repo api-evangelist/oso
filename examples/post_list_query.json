@@ -1,0 +1,38 @@
+{
+  "operationId": "post_list_query",
+  "path": "/list_query",
+  "method": "POST",
+  "description": "Fetches a filter that can be applied to a database query to return just the resources on which an actor can perform an action.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Generate SQL condition for authorized resources\nconst alice = { type: \"User\", id: \"alice\" };\nconst sqlCondition = await oso.listLocal(alice, \"read\", \"Issue\", \"id\");\n\n// Use with database query (example with Kysely)\nconst authorized_issues = await db\n  .selectFrom(\"issues\")\n  .where(sql.raw<boolean>(sqlCondition))\n  .selectAll()\n  .execute();\n\nconsole.log(\"Authorized issues:\", authorized_issues.length);\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "from oso_cloud import Oso, Value\nimport os\nfrom sqlalchemy import select, text\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Generate SQL condition for authorized resources\nalice = Value(\"User\", \"alice\")\nsql_condition = oso.list_local(alice, \"read\", \"Issue\", \"id\")\n\n# Use with SQLAlchemy\nauthorized_issues = session.scalars(\n    select(Issues).filter(text(sql_condition))\n).all()\n\nprint(f\"Found {len(authorized_issues)} authorized issues\")\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Generate SQL condition for authorized resources\nuser := oso.NewValue(\"User\", \"alice\")\nsqlCondition, err := osoClient.ListLocal(user, \"read\", \"Issue\", \"id\")\nif err != nil {\n    log.Fatal(err)\n}\n\n// Use with GORM\nvar issues []Issue\ndb.Find(&issues, sqlCondition)\n\nfmt.Printf(\"Found %d authorized issues\\n\", len(issues))\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport java.util.List;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Generate SQL condition for authorized resources\n            Value alice = new Value(\"User\", \"alice\");\n            String sqlCondition = oso.listLocal(alice, \"read\", \"Issue\", \"id\");\n            \n            // Use with JPA/Hibernate\n            List<Issue> authorizedIssues = entityManager.createQuery(\n                \"SELECT i FROM Issue i WHERE \" + sqlCondition, Issue.class)\n                .getResultList();\n            \n            System.out.println(\"Found \" + authorizedIssues.size() + \" authorized issues\");\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Generate SQL condition for authorized resources\nalice = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nsql_condition = oso.list_local(alice, \"read\", \"Issue\", \"id\")\n\n# Use with ActiveRecord\nauthorized_issues = Issue.where(sql_condition)\n\nputs \"Found #{authorized_issues.count} authorized issues\"\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\nusing Microsoft.EntityFrameworkCore;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate SQL condition for authorized resources\nvar alice = new Value(\"User\", \"alice\");\nstring sqlCondition = await oso.ListLocal(alice, \"read\", \"Issue\", \"id\");\n\n// Use with Entity Framework\nvar authorizedIssues = await context.Issues\n    .FromSqlRaw($\"SELECT * FROM Issues WHERE {sqlCondition}\")\n    .ToListAsync();\n\nConsole.WriteLine($\"Found {authorizedIssues.Count} authorized issues\");\n"
+    }
+  ]
+}

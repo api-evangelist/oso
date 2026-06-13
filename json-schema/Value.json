@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/Value.json",
+  "title": "Value",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "nullable": true
+    },
+    "id": {
+      "type": "string",
+      "nullable": true
+    }
+  }
+}

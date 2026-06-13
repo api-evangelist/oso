@@ -1,0 +1,38 @@
+{
+  "operationId": "post_list",
+  "path": "/list",
+  "method": "POST",
+  "description": "Fetches a list of resource IDs on which an actor can perform a particular action. Supports pagination: provide `page_size` to receive results in pages, with a `next_page_token` in the response for fetching subsequent pages.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// List all repositories the user can read\nconst alice = { type: \"User\", id: \"alice\" };\nconst repositoryIds = await oso.list(alice, \"read\", \"Repository\");\nconsole.log(\"Readable repositories:\", repositoryIds);\n\n// With context facts\nconst issueIds = await oso.list(\n  alice, \n  \"read\", \n  \"Issue\",\n  [\n    [\"has_relation\", { type: \"Issue\", id: \"123\" }, \"parent\", { type: \"Repository\", id: \"anvils\" }],\n    [\"has_relation\", { type: \"Issue\", id: \"456\" }, \"parent\", { type: \"Repository\", id: \"acme\" }]\n  ]\n);\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# List all repositories the user can read\nalice = Value(\"User\", \"alice\")\nrepository_ids = oso.list(alice, \"read\", \"Repository\")\nprint(f\"Readable repositories: {repository_ids}\")\n\n# With context facts\nissue_ids = oso.list(\n    alice, \n    \"read\", \n    \"Issue\",\n    context_facts=[\n        (\"has_relation\", Value(\"Issue\", \"123\"), \"parent\", Value(\"Repository\", \"anvils\")),\n        (\"has_relation\", Value(\"Issue\", \"456\"), \"parent\", Value(\"Repository\", \"acme\"))\n    ]\n)\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// List all repositories the user can read\nuser := oso.NewValue(\"User\", \"alice\")\nrepositoryIds, err := osoClient.List(user, \"read\", \"Repository\", nil)\nif err != nil {\n    log.Fatal(err)\n}\nfmt.Printf(\"Readable repositories: %v\\n\", repositoryIds)\n\n// With context facts\ncontextFacts := []oso.Fact{\n    oso.NewFact(\"has_relation\", oso.NewValue(\"Issue\", \"123\"), oso.String(\"parent\"), oso.NewValue(\"Repository\", \"anvils\")),\n    oso.NewFact(\"has_relation\", oso.NewValue(\"Issue\", \"456\"), oso.String(\"parent\"), oso.NewValue(\"Repository\", \"acme\")),\n}\nissueIds, err := osoClient.ListWithContext(user, \"read\", \"Issue\", contextFacts)\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport java.util.Arrays;\nimport java.util.List;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // List all repositories the user can read\n            Value alice = new Value(\"User\", \"alice\");\n            List<String> repositoryIds = oso.list(alice, \"read\", \"Repository\");\n            System.out.println(\"Readable repositories: \" + repositoryIds);\n            \n            // With context facts\n            Value issue1 = new Value(\"Issue\", \"123\");\n            Value issue2 = new Value(\"Issue\", \"456\");\n            Value repo1 = new Value(\"Repository\", \"anvils\");\n            Value repo2 = new Value(\"Repository\", \"acme\");\n            \n            List<String> issueIds = oso.list(alice, \"read\", \"Issue\", Arrays.asList(\n                Arrays.asList(\"has_relation\", issue1, \"parent\", repo1),\n                Arrays.asList(\"has_relation\", issue2, \"parent\", repo2)\n            ));\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# List all repositories the user can read\nalice = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nrepository_ids = oso.list(alice, \"read\", \"Repository\")\nputs \"Readable repositories: #{repository_ids}\"\n\n# With context facts\nissue_ids = oso.list(alice, \"read\", \"Issue\", \n  context_facts: [\n    [\"has_relation\", OsoCloud::Value.new(type: \"Issue\", id: \"123\"), \"parent\", OsoCloud::Value.new(type: \"Repository\", id: \"anvils\")],\n    [\"has_relation\", OsoCloud::Value.new(type: \"Issue\", id: \"456\"), \"parent\", OsoCloud::Value.new(type: \"Repository\", id: \"acme\")]\n  ]\n)\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// List all repositories the user can read\nvar alice = new Value(\"User\", \"alice\");\nvar repositoryIds = await oso.List(alice, \"read\", \"Repository\");\nConsole.WriteLine($\"Readable repositories: {string.Join(\", \", repositoryIds)}\");\n\n// With context facts\nvar issueIds = await oso.List(alice, \"read\", \"Issue\", \n    contextFacts: new[] {\n        new[] { \"has_relation\", new Value(\"Issue\", \"123\"), \"parent\", new Value(\"Repository\", \"anvils\") },\n        new[] { \"has_relation\", new Value(\"Issue\", \"456\"), \"parent\", new Value(\"Repository\", \"acme\") }\n    });\n"
+    }
+  ]
+}

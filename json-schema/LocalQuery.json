@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/LocalQuery.json",
+  "title": "LocalQuery",
+  "type": "object",
+  "required": [
+    "data_bindings",
+    "mode",
+    "query"
+  ],
+  "properties": {
+    "query": {
+      "$ref": "#/components/schemas/Query"
+    },
+    "data_bindings": {
+      "type": "string"
+    },
+    "mode": {
+      "$ref": "#/components/schemas/LocalQueryMode"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/SavePolicyError.json",
+  "title": "SavePolicyError",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "error_type",
+        "message"
+      ],
+      "properties": {
+        "error_type": {
+          "type": "string",
+          "enum": [
+            "Generic"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "error_type",
+        "errors",
+        "message"
+      ],
+      "properties": {
+        "error_type": {
+          "type": "string",
+          "enum": [
+            "Validation"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/PolicyError"
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "error_type",
+        "message",
+        "test_results"
+      ],
+      "properties": {
+        "error_type": {
+          "type": "string",
+          "enum": [
+            "TestsFailed"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "test_results": {
+          "$ref": "#/components/schemas/PolicyTestResult"
+        }
+      }
+    }
+  ]
+}

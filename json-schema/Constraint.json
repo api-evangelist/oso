@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/Constraint.json",
+  "title": "Constraint",
+  "description": "Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.",
+  "type": "object",
+  "required": [
+    "type"
+  ],
+  "properties": {
+    "type": {
+      "description": "The type of the variable.",
+      "type": "string"
+    },
+    "ids": {
+      "description": "The possible values of the variable. `None` means the variable can be any value. `Some([\"foo\"])` means the variable must be exactly `\"foo\"`. `Some([\"foo\", \"bar\"])` means the variable can be either `\"foo\"` or `\"bar\"`. The latter is how we represent `In` expressions in the new Query API.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "nullable": true
+    }
+  }
+}

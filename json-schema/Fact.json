@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/Fact.json",
+  "title": "Fact",
+  "description": "A pattern object for matching authorization-relevant data, ie: facts.",
+  "type": "object",
+  "required": [
+    "args",
+    "predicate"
+  ],
+  "properties": {
+    "predicate": {
+      "type": "string"
+    },
+    "args": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Value"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/LocalQueryResult.json",
+  "title": "LocalQueryResult",
+  "type": "object",
+  "required": [
+    "sql"
+  ],
+  "properties": {
+    "sql": {
+      "type": "string"
+    }
+  }
+}

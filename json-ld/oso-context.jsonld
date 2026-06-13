@@ -1,0 +1,205 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "oso": "https://www.osohq.com/vocab#",
+    "api": "https://api.osohq.com/api/",
+
+    "OsoCloud": {
+      "@id": "oso:OsoCloud",
+      "@type": "@id"
+    },
+
+    "AuthorizationAPI": {
+      "@id": "oso:AuthorizationAPI",
+      "@type": "@id"
+    },
+
+    "Actor": {
+      "@id": "oso:Actor",
+      "@type": "@id"
+    },
+
+    "Resource": {
+      "@id": "oso:Resource",
+      "@type": "@id"
+    },
+
+    "Action": {
+      "@id": "oso:Action",
+      "@type": "@id"
+    },
+
+    "Permission": {
+      "@id": "oso:Permission",
+      "@type": "@id"
+    },
+
+    "Role": {
+      "@id": "oso:Role",
+      "@type": "@id"
+    },
+
+    "Fact": {
+      "@id": "oso:Fact",
+      "@type": "@id"
+    },
+
+    "Policy": {
+      "@id": "oso:Policy",
+      "@type": "@id"
+    },
+
+    "TypedId": {
+      "@id": "oso:TypedId",
+      "@type": "@id"
+    },
+
+    "Constraint": {
+      "@id": "oso:Constraint",
+      "@type": "@id"
+    },
+
+    "AuthorizeQuery": {
+      "@id": "oso:AuthorizeQuery",
+      "@type": "@id"
+    },
+
+    "AuthorizeResult": {
+      "@id": "oso:AuthorizeResult",
+      "@type": "@id"
+    },
+
+    "ListQuery": {
+      "@id": "oso:ListQuery",
+      "@type": "@id"
+    },
+
+    "ListResult": {
+      "@id": "oso:ListResult",
+      "@type": "@id"
+    },
+
+    "ActionsQuery": {
+      "@id": "oso:ActionsQuery",
+      "@type": "@id"
+    },
+
+    "ActionsResult": {
+      "@id": "oso:ActionsResult",
+      "@type": "@id"
+    },
+
+    "Bulk": {
+      "@id": "oso:Bulk",
+      "@type": "@id"
+    },
+
+    "FactChangeset": {
+      "@id": "oso:FactChangeset",
+      "@type": "@id"
+    },
+
+    "PolicyMetadata": {
+      "@id": "oso:PolicyMetadata",
+      "@type": "@id"
+    },
+
+    "ResourceBlockData": {
+      "@id": "oso:ResourceBlockData",
+      "@type": "@id"
+    },
+
+    "name": {
+      "@id": "schema:name"
+    },
+
+    "description": {
+      "@id": "schema:description"
+    },
+
+    "type": {
+      "@id": "oso:type"
+    },
+
+    "id": {
+      "@id": "oso:id"
+    },
+
+    "predicate": {
+      "@id": "oso:predicate"
+    },
+
+    "args": {
+      "@id": "oso:args",
+      "@container": "@list"
+    },
+
+    "actor": {
+      "@id": "oso:actor",
+      "@type": "@id"
+    },
+
+    "resource": {
+      "@id": "oso:resource",
+      "@type": "@id"
+    },
+
+    "action": {
+      "@id": "oso:action"
+    },
+
+    "allowed": {
+      "@id": "oso:allowed",
+      "@type": "xsd:boolean"
+    },
+
+    "results": {
+      "@id": "oso:results",
+      "@container": "@list"
+    },
+
+    "src": {
+      "@id": "oso:src"
+    },
+
+    "filename": {
+      "@id": "oso:filename"
+    },
+
+    "message": {
+      "@id": "schema:error"
+    },
+
+    "contextFacts": {
+      "@id": "oso:contextFacts",
+      "@container": "@list"
+    },
+
+    "delete": {
+      "@id": "oso:delete",
+      "@container": "@list"
+    },
+
+    "insert": {
+      "@id": "oso:insert",
+      "@container": "@list"
+    },
+
+    "resources": {
+      "@id": "oso:resources",
+      "@type": "oso:Resource",
+      "@container": "@set"
+    },
+
+    "actions": {
+      "@id": "oso:actions",
+      "@container": "@set"
+    },
+
+    "value": {
+      "@id": "oso:value"
+    }
+  }
+}

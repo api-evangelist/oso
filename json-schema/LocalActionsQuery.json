@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/LocalActionsQuery.json",
+  "title": "LocalActionsQuery",
+  "type": "object",
+  "required": [
+    "data_bindings",
+    "query"
+  ],
+  "properties": {
+    "query": {
+      "$ref": "#/components/schemas/ActionsQuery"
+    },
+    "data_bindings": {
+      "type": "string"
+    }
+  }
+}

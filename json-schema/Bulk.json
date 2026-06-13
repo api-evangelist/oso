@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/Bulk.json",
+  "title": "Bulk",
+  "type": "object",
+  "required": [
+    "delete",
+    "tell"
+  ],
+  "properties": {
+    "delete": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Fact"
+      }
+    },
+    "tell": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Fact"
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "operationId": "post_evaluate_query",
+  "path": "/evaluate_query",
+  "method": "POST",
+  "description": "Query v2: query for any expression.\n\nUnlike `GET /facts`, which only lists facts you've added to Oso Cloud, you can use `POST /evaluate_query` to list derived information about any rule in your policy.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Basic query building\nconst actor = { type: \"User\", id: \"alice\" };\nconst repository = { type: \"Repository\", id: \"anvils\" };\nconst query = oso.buildQuery([\"allow\", actor, \"read\", repository]);\nconst result = await query.evaluate(repository);\n\n// Add constraints with 'and'\nconst constrainedQuery = oso.buildQuery([\"allow\", actor, \"read\", repository])\n  .and([\"has_relation\", repository, \"folder\", { type: \"Folder\", id: \"docs\" }]);\n\n// Different evaluation modes\nconst exists = await query.evaluate();                           // Boolean\nconst actions = await query.evaluate(\"action\");                   // Single variable\nconst pairs = await query.evaluate([\"action\", \"repository\"]);     // Tuple variables\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Basic query building\nactor = Value(\"User\", \"alice\")\nrepository = Value(\"Repository\", \"anvils\")\nquery = oso.build_query((\"allow\", actor, \"read\", repository))\nresult = query.evaluate(repository)\n\n# Add constraints with 'and_'\nconstrained_query = oso.build_query((\"allow\", actor, \"read\", repository)) \\\n    .and_((\"has_relation\", repository, \"folder\", Value(\"Folder\", \"docs\")))\n\n# Different evaluation modes\nexists = query.evaluate()                              # Boolean\nactions = query.evaluate(\"action\")                      # Single variable\npairs = query.evaluate((\"action\", \"repository\"))        # Tuple variables\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Basic query building\nactor := oso.NewValue(\"User\", \"alice\")\nrepository := oso.NewValue(\"Repository\", \"anvils\")\nquery := osoClient.BuildQuery(oso.NewQueryFact(\"allow\", actor, oso.String(\"read\"), repository))\nrepos, err := query.EvaluateValues(repository)\n\n// Add constraints with 'And'\nfolder := oso.NewValue(\"Folder\", \"docs\")\nconstrainedQuery := osoClient.BuildQuery(oso.NewQueryFact(\"allow\", actor, oso.String(\"read\"), repository)).\n    And(oso.NewQueryFact(\"has_relation\", repository, oso.String(\"folder\"), folder))\n\n// Different evaluation modes\nallowed, err := query.EvaluateExists()                                    // Boolean\nactions, err := query.EvaluateValues(oso.NewVariable(\"action\"))           // Values for variable\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Basic query building\n            Value actor = new Value(\"User\", \"alice\");\n            Value repository = new Value(\"Repository\", \"anvils\");\n            var query = oso.buildQuery(\"allow\", actor, \"read\", repository);\n            var result = query.evaluate(repository);\n            \n            // Add constraints with 'and'\n            Value folder = new Value(\"Folder\", \"docs\");\n            var constrainedQuery = oso.buildQuery(\"allow\", actor, \"read\", repository)\n                .and(\"has_relation\", repository, \"folder\", folder);\n            \n            // Different evaluation modes\n            boolean exists = query.evaluate();                      // Boolean\n            var actions = query.evaluate(\"action\");                 // Single variable\n            var pairs = query.evaluate(\"action\", \"repository\");     // Tuple variables\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Basic query building\nactor = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nrepository = OsoCloud::Value.new(type: \"Repository\", id: \"anvils\")\nquery = oso.build_query([\"allow\", actor, \"read\", repository])\nresult = query.evaluate(repository)\n\n# Add constraints with 'and_'\nfolder = OsoCloud::Value.new(type: \"Folder\", id: \"docs\")\nconstrained_query = oso.build_query([\"allow\", actor, \"read\", repository])\n  .and_([\"has_relation\", repository, \"folder\", folder])\n\n# Different evaluation modes\nexists = query.evaluate()                           # Boolean\nactions = query.evaluate(\"action\")                  # Single variable\npairs = query.evaluate([\"action\", \"repository\"])    # Tuple variables\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Basic query building\nvar actor = new Value(\"User\", \"alice\");\nvar repository = new Value(\"Repository\", \"anvils\");\nvar query = oso.BuildQuery(\"allow\", actor, \"read\", repository);\nvar result = await query.Evaluate(repository);\n\n// Add constraints with 'And'\nvar folder = new Value(\"Folder\", \"docs\");\nvar constrainedQuery = oso.BuildQuery(\"allow\", actor, \"read\", repository)\n    .And(\"has_relation\", repository, \"folder\", folder);\n\n// Different evaluation modes\nbool exists = await query.Evaluate();                          // Boolean\nvar actions = await query.Evaluate(\"action\");                  // Single variable\nvar pairs = await query.Evaluate(new[] { \"action\", \"repository\" }); // Tuple variables\n"
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+vocabulary:
+  title: Oso Cloud Authorization Vocabulary
+  description: Key terms and concepts used in the Oso Cloud authorization platform and its HTTP API
+  source: https://www.osohq.com/docs
+  terms:
+
+    - term: actor
+      definition: >-
+        An entity that can perform actions on resources. Typically represents a user,
+        service account, or other agent in the system.
+      tags: [authorization, core]
+
+    - term: resource
+      definition: >-
+        An object or entity in the system that actors can act upon. Resources have
+        defined permissions and roles in the Polar policy.
+      tags: [authorization, core]
+
+    - term: action
+      definition: >-
+        An operation that an actor can attempt to perform on a resource, such as
+        "read", "write", or "delete". Permissions are defined as actor-action-resource
+        triples.
+      tags: [authorization, core]
+
+    - term: permission
+      definition: >-
+        The allowance for an actor to perform a specific action on a specific resource.
+        Permissions are derived from roles and rules defined in the Polar policy.
+      tags: [authorization, core]
+
+    - term: role
+      definition: >-
+        A named set of permissions that can be assigned to actors on resources. Roles
+        simplify permission management by grouping related permissions (e.g., "owner",
+        "maintainer", "viewer").
+      tags: [authorization, rbac]
+
+    - term: fact
+      definition: >-
+        An authorization data record stored in Oso Cloud that asserts a relationship
+        between entities. Facts are evaluated against the policy at query time to
+        determine permissions.
+      tags: [authorization, data]
+
+    - term: policy
+      definition: >-
+        A set of rules written in the Polar language that defines the authorization
+        logic for an application. The policy specifies which actors can perform which
+        actions on which resources.
+      tags: [policy, core]
+
+    - term: Polar
+      definition: >-
+        Oso's declarative policy language used to express authorization logic. Polar
+        code defines actors, resources, roles, permissions, and rules for deriving
+        access control decisions.
+      tags: [policy, language]
+
+    - term: authorize
+      definition: >-
+        The core authorization check that determines whether a specific actor can
+        perform a specific action on a specific resource. Returns a boolean result.
+      tags: [check-api, core]
+
+    - term: RBAC
+      definition: >-
+        Role-Based Access Control. An authorization pattern where permissions are
+        assigned to roles, and actors are granted roles. Oso Cloud natively supports
+        RBAC patterns through the Polar policy language.
+      tags: [pattern, rbac]
+
+    - term: ReBAC
+      definition: >-
+        Relationship-Based Access Control. An authorization pattern where permissions
+        are derived from relationships between entities (e.g., a user who owns a
+        repository can write to it). Oso Cloud supports ReBAC through facts and
+        policy rules.
+      tags: [pattern, rebac]
+
+    - term: ABAC
+      definition: >-
+        Attribute-Based Access Control. An authorization pattern where permissions are
+        granted based on attributes of actors, resources, and environment. Oso Cloud
+        supports ABAC through context facts and policy conditions.
+      tags: [pattern, abac]
+
+    - term: context fact
+      definition: >-
+        A fact provided at query time rather than stored persistently in Oso Cloud.
+        Context facts allow request-time data (such as IP address or session attributes)
+        to influence authorization decisions.
+      tags: [data, context]
+
+    - term: policy metadata
+      definition: >-
+        Structured information about the types, resources, roles, and permissions
+        defined in the active policy. Useful for introspecting the policy schema
+        programmatically.
+      tags: [policy, metadata]
+
+    - term: bulk operation
+      definition: >-
+        An atomic operation that adds or removes multiple authorization facts in a
+        single API call. Supports transactions to ensure consistency of authorization
+        data.
+      tags: [data, operations]
+
+    - term: TypedId
+      definition: >-
+        A structured identifier for an entity in Oso Cloud, consisting of a type name
+        and an ID value. Used to reference actors, resources, and other entities in
+        facts and queries.
+      tags: [data, schema]
+
+    - term: local authorization
+      definition: >-
+        Authorization checks performed at the database level using SQL queries generated
+        by Oso Cloud. Enables efficient filtering of large result sets based on
+        authorization rules.
+      tags: [local, database]
+
+    - term: API key
+      definition: >-
+        A Bearer token used to authenticate requests to the Oso Cloud API. API keys
+        are scoped to an Oso Cloud environment and must be included in the Authorization
+        header of all authenticated requests.
+      tags: [authentication, security]
+
+    - term: environment
+      definition: >-
+        An isolated Oso Cloud instance with its own policy, facts, and API keys.
+        Organizations typically maintain separate environments for development, staging,
+        and production.
+      tags: [operations, core]
+
+    - term: constraint
+      definition: >-
+        A condition used in local authorization queries to filter results. Constraints
+        are generated by Oso Cloud to represent authorization rules in terms of database
+        column comparisons.
+      tags: [local, query]

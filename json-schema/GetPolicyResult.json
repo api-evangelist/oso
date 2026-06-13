@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/GetPolicyResult.json",
+  "title": "GetPolicyResult",
+  "type": "object",
+  "properties": {
+    "policy": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Policy"
+        }
+      ],
+      "nullable": true
+    }
+  }
+}

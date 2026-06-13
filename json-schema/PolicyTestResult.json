@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/PolicyTestResult.json",
+  "title": "PolicyTestResult",
+  "description": "Result of a Policy test API request. Sent to `oso-cloud` CLI as JSON.",
+  "type": "object",
+  "required": [
+    "errors",
+    "success",
+    "tests"
+  ],
+  "properties": {
+    "success": {
+      "description": "Did the policy test succeed?",
+      "type": "boolean"
+    },
+    "errors": {
+      "description": "What errors did we encounter?",
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PolicyError"
+      }
+    },
+    "tests": {
+      "description": "What tests did we execute?",
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/TestSummary"
+      }
+    }
+  }
+}

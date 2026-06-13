@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/PolicyFailure.json",
+  "title": "PolicyFailure",
+  "description": "All known failure modes for a submitted policy test. Encountering any of these scenarios means the policy test has failed.",
+  "oneOf": [
+    {
+      "description": "Polar file failed validation.",
+      "type": "string",
+      "enum": [
+        "ValidationFailed"
+      ]
+    },
+    {
+      "description": "An assertion failed in an executed test.",
+      "type": "string",
+      "enum": [
+        "AssertionFailed"
+      ]
+    },
+    {
+      "description": "Server hit an unexpected error.",
+      "type": "string",
+      "enum": [
+        "ServerError"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "operationId": "post_actions_query",
+  "path": "/actions_query",
+  "method": "POST",
+  "description": "",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Generate actions query SQL\nconst alice = { type: \"User\", id: \"alice\" };\nconst issue = { type: \"Issue\", id: \"123\" };\nconst query = await oso.actionsLocal(alice, issue);\n\n// Execute with database\nconst result = await sql.raw(query).execute(db);\nconst actions = result.rows.map(row => row.actions);\n\nconsole.log(\"Available actions:\", actions);\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "from oso_cloud import Oso, Value\nimport os\nfrom sqlalchemy import text\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Generate actions query SQL\nalice = Value(\"User\", \"alice\")\nissue = Value(\"Issue\", \"123\")\nquery = oso.actions_local(alice, issue)\n\n# Execute with SQLAlchemy\nactions = list(session.execute(text(query)).scalars())\n\nprint(f\"Available actions: {actions}\")\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n    // Generate actions query SQL\n    alice := oso.NewValue(\"User\", \"alice\")\n    issue := oso.NewValue(\"Issue\", \"123\")\nquery, err := osoClient.ActionsLocal(alice, issue)\nif err != nil {\n    log.Fatal(err)\n}\n\n// Execute with GORM\nvar actions []string\ndb.Raw(query).Pluck(\"actions\", &actions)\n\nfmt.Printf(\"Available actions: %v\\n\", actions)\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport java.util.List;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Generate actions query SQL\n            Value alice = new Value(\"User\", \"alice\");\n            Value issue = new Value(\"Issue\", \"123\");\n            String query = oso.actionsLocal(alice, issue);\n            \n            // Execute with database (example with JPA/Hibernate)\n            List<String> actions = entityManager.createNativeQuery(query)\n                .getResultList();\n            \n            System.out.println(\"Available actions: \" + actions);\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Generate actions query SQL\nalice = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nissue = OsoCloud::Value.new(type: \"Issue\", id: \"123\")\nquery = oso.actions_local(alice, issue)\n\n# Execute with ActiveRecord\nactions = ActiveRecord::Base.connection.execute(query).values.flatten\n\nputs \"Available actions: #{actions}\"\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\nusing System.Data;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate actions query SQL\nvar alice = new Value(\"User\", \"alice\");\nvar issue = new Value(\"Issue\", \"123\");\nstring query = await oso.ActionsLocal(alice, issue);\n\n// Execute with Entity Framework\nvar actions = await context.Database.SqlQueryRaw<string>(query).ToListAsync();\n\nConsole.WriteLine($\"Available actions: {string.Join(\", \", actions)}\");\n"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/FactChangeset.json",
+  "title": "FactChangeset",
+  "description": "A grouped run of facts to insert or delete. Inserted facts must contain concrete fact args, but deleted facts may contain wildcards.",
+  "anyOf": [
+    {
+      "type": "object",
+      "required": [
+        "inserts"
+      ],
+      "properties": {
+        "inserts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Fact"
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "deletes"
+      ],
+      "properties": {
+        "deletes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Fact"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/PolicyMetadata.json",
+  "title": "PolicyMetadata",
+  "type": "object",
+  "required": [
+    "resources"
+  ],
+  "properties": {
+    "resources": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/ResourceBlockData"
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/LocalQueryMode.json",
+  "title": "LocalQueryMode",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "mode",
+        "query_vars_to_output_column_names"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "select"
+          ]
+        },
+        "query_vars_to_output_column_names": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "mode",
+        "output_column_name",
+        "query_var"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "filter"
+          ]
+        },
+        "query_var": {
+          "type": "string"
+        },
+        "output_column_name": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

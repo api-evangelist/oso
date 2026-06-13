@@ -1,0 +1,38 @@
+{
+  "operationId": "post_authorize",
+  "path": "/authorize",
+  "method": "POST",
+  "description": "Determines whether or not an actor can take an action on a resource, based on a combination of authorization data and policy logic.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Basic authorization check\nconst alice = { type: \"User\", id: \"alice\" };\nconst repository = { type: \"Repository\", id: \"anvils\" };\n\nconst authorized = await oso.authorize(alice, \"read\", repository);\nif (!authorized) {\n  throw new Error(\"Access denied\");\n}\n\n// With context facts for additional information\nconst issue = { type: \"Issue\", id: \"123\" };\nconst contextAuthorized = await oso.authorize(\n  alice, \n  \"read\", \n  issue, \n  [[\"has_relation\", issue, \"parent\", repository]]  // Context facts\n);\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Basic authorization check\nalice = Value(\"User\", \"alice\")\nrepository = Value(\"Repository\", \"anvils\")\n\nif not oso.authorize(alice, \"read\", repository):\n    raise Exception(\"Action is not allowed\")\n\n# With context facts\nissue = Value(\"Issue\", \"123\")\nauthorized = oso.authorize(\n    alice, \n    \"read\", \n    issue, \n    context_facts=[(\"has_relation\", issue, \"parent\", repository)]\n)\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Basic authorization check\nuser := oso.NewValue(\"User\", \"alice\")\nrepository := oso.NewValue(\"Repository\", \"anvils\")\n\nallowed, err := osoClient.Authorize(user, \"read\", repository)\nif err != nil {\n    log.Fatal(err)\n}\nif !allowed {\n    return fmt.Errorf(\"access denied\")\n}\n\n// With context facts\nissue := oso.NewValue(\"Issue\", \"123\")\ncontextFacts := []oso.Fact{\n    oso.NewFact(\"has_relation\", issue, oso.String(\"parent\"), repository),\n}\nallowed, err = osoClient.AuthorizeWithContext(user, \"read\", issue, contextFacts)\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Basic authorization check\n            Value alice = new Value(\"User\", \"alice\");\n            Value repository = new Value(\"Repository\", \"anvils\");\n            \n            boolean authorized = oso.authorize(alice, \"read\", repository);\n            if (!authorized) {\n                throw new RuntimeException(\"Access denied\");\n            }\n            \n            // With context facts for additional information\n            Value issue = new Value(\"Issue\", \"123\");\n            boolean contextAuthorized = oso.authorize(alice, \"read\", issue, \n                Arrays.asList(Arrays.asList(\"has_relation\", issue, \"parent\", repository)));\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Basic authorization check\nalice = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nrepository = OsoCloud::Value.new(type: \"Repository\", id: \"anvils\")\n\nauthorized = oso.authorize(alice, \"read\", repository)\nraise \"Access denied\" unless authorized\n\n# With context facts\nissue = OsoCloud::Value.new(type: \"Issue\", id: \"123\")\ncontext_authorized = oso.authorize(alice, \"read\", issue, \n  context_facts: [[\"has_relation\", issue, \"parent\", repository]])\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Basic authorization check\nvar alice = new Value(\"User\", \"alice\");\nvar repository = new Value(\"Repository\", \"anvils\");\n\nbool authorized = await oso.Authorize(alice, \"read\", repository);\nif (!authorized) {\n    throw new UnauthorizedAccessException(\"Access denied\");\n}\n\n// With context facts for additional information\nvar issue = new Value(\"Issue\", \"123\");\nbool contextAuthorized = await oso.Authorize(alice, \"read\", issue, \n    contextFacts: new[] { new[] { \"has_relation\", issue, \"parent\", repository } });\n"
+    }
+  ]
+}

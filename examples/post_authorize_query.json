@@ -1,0 +1,38 @@
+{
+  "operationId": "post_authorize_query",
+  "path": "/authorize_query",
+  "method": "POST",
+  "description": "Fetches a query that can be run against your database to determine whether an actor can perform an action on a resource.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Generate authorization check SQL\nconst alice = { type: \"User\", id: \"alice\" };\nconst issue = { type: \"Issue\", id: \"123\" };\nconst query = await oso.authorizeLocal(alice, \"read\", issue);\n\n// Execute with database (example with raw SQL)\nconst result = await sql.raw(query).execute(db);\nconst { allowed } = result.rows[0];\n\nif (!allowed) {\n  throw new Error(\"Access denied\");\n}\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "from oso_cloud import Oso, Value\nimport os\nfrom sqlalchemy import text\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Generate authorization check SQL\nalice = Value(\"User\", \"alice\")\nissue = Value(\"Issue\", \"123\")\nquery = oso.authorize_local(alice, \"read\", issue)\n\n# Execute with SQLAlchemy\nauthorized = session.execute(text(query)).scalar()\n\nif not authorized:\n    raise Exception(\"Access denied\")\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n    // Generate authorization check SQL\n    alice := oso.NewValue(\"User\", \"alice\")\n    issue := oso.NewValue(\"Issue\", \"123\")\nquery, err := osoClient.AuthorizeLocal(alice, \"read\", issue)\nif err != nil {\n    log.Fatal(err)\n}\n\n// Execute with GORM\nvar authorizeResult AuthorizeResult\ndb.Raw(query).Scan(&authorizeResult)\n\nif !authorizeResult.Allowed {\n    return fmt.Errorf(\"access denied\")\n}\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Generate authorization check SQL\n            Value alice = new Value(\"User\", \"alice\");\n            Value issue = new Value(\"Issue\", \"123\");\n            String query = oso.authorizeLocal(alice, \"read\", issue);\n            \n            // Execute with database (example with JPA/Hibernate)\n            Boolean authorized = (Boolean) entityManager.createNativeQuery(query)\n                .getSingleResult();\n            \n            if (!authorized) {\n                throw new SecurityException(\"Access denied\");\n            }\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Generate authorization check SQL\nalice = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nissue = OsoCloud::Value.new(type: \"Issue\", id: \"123\")\nquery = oso.authorize_local(alice, \"read\", issue)\n\n# Execute with ActiveRecord\nauthorized = ActiveRecord::Base.connection.execute(query).values.first.first\n\nraise \"Access denied\" unless authorized\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate authorization check SQL\nvar alice = new Value(\"User\", \"alice\");\nvar issue = new Value(\"Issue\", \"123\");\nstring query = await oso.AuthorizeLocal(alice, \"read\", issue);\n\n// Execute with Entity Framework\nbool authorized = await context.Database.SqlQueryRaw<bool>(query).FirstAsync();\n\nif (!authorized) {\n    throw new UnauthorizedAccessException(\"Access denied\");\n}\n"
+    }
+  ]
+}

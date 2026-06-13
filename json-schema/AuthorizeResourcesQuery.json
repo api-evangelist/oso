@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.osohq.com/schemas/AuthorizeResourcesQuery.json",
+  "title": "AuthorizeResourcesQuery",
+  "type": "object",
+  "required": [
+    "action",
+    "actor_id",
+    "actor_type",
+    "resources"
+  ],
+  "properties": {
+    "actor_type": {
+      "type": "string"
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Value"
+      }
+    },
+    "context_facts": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Fact"
+      }
+    }
+  }
+}

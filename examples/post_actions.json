@@ -1,0 +1,38 @@
+{
+  "operationId": "post_actions",
+  "path": "/actions",
+  "method": "POST",
+  "description": "Fetches a list of actions which an actor can perform on a particular resource.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Get all actions user can perform on repository\nconst user = { type: \"User\", id: \"alice\" };\nconst repository = { type: \"Repository\", id: \"anvils\" };\nconst actions = await oso.actions(user, repository);\nconsole.log(\"Available actions:\", actions);\n\n// With context facts\nconst issue = { type: \"Issue\", id: \"123\" };\nconst contextActions = await oso.actions(\n  user, \n  issue, \n  [[\"has_relation\", issue, \"parent\", repository]]\n);\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Get all actions user can perform on repository\nalice = Value(\"User\", \"alice\")\nrepository = Value(\"Repository\", \"anvils\")\nactions = oso.actions(alice, repository)\nprint(f\"Available actions: {actions}\")\n\n# With context facts\nissue = Value(\"Issue\", \"123\")\nactions = oso.actions(\n    alice, \n    issue, \n    context_facts=[(\"has_relation\", issue, \"parent\", repository)]\n)\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Get all actions user can perform on repository\nuser := oso.NewValue(\"User\", \"alice\")\nrepository := oso.NewValue(\"Repository\", \"anvils\")\nactions, err := osoClient.Actions(user, repository)\nif err != nil {\n    log.Fatal(err)\n}\nfmt.Printf(\"Available actions: %v\\n\", actions)\n\n// With context facts\nissue := oso.NewValue(\"Issue\", \"123\")\ncontextFacts := []oso.Fact{\n    oso.NewFact(\"has_relation\", issue, oso.String(\"parent\"), repository),\n}\nactions, err = osoClient.ActionsWithContext(user, issue, contextFacts)\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport java.util.Arrays;\nimport java.util.List;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Get all actions user can perform on repository\n            Value user = new Value(\"User\", \"alice\");\n            Value repository = new Value(\"Repository\", \"anvils\");\n            List<String> actions = oso.actions(user, repository);\n            System.out.println(\"Available actions: \" + actions);\n            \n            // With context facts\n            Value issue = new Value(\"Issue\", \"123\");\n            List<String> contextActions = oso.actions(user, issue,\n                Arrays.asList(Arrays.asList(\"has_relation\", issue, \"parent\", repository)));\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Get all actions user can perform on repository\nuser = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nrepository = OsoCloud::Value.new(type: \"Repository\", id: \"anvils\")\nactions = oso.actions(user, repository)\nputs \"Available actions: #{actions}\"\n\n# With context facts\nissue = OsoCloud::Value.new(type: \"Issue\", id: \"123\")\ncontext_actions = oso.actions(user, issue,\n  context_facts: [[\"has_relation\", issue, \"parent\", repository]])\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Get all actions user can perform on repository\nvar user = new Value(\"User\", \"alice\");\nvar repository = new Value(\"Repository\", \"anvils\");\nvar actions = await oso.Actions(user, repository);\nConsole.WriteLine($\"Available actions: {string.Join(\", \", actions)}\");\n\n// With context facts\nvar issue = new Value(\"Issue\", \"123\");\nvar contextActions = await oso.Actions(user, issue,\n    contextFacts: new[] { new[] { \"has_relation\", issue, \"parent\", repository } });\n"
+    }
+  ]
+}

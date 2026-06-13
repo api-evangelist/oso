@@ -1,0 +1,38 @@
+{
+  "operationId": "post_policy",
+  "path": "/policy",
+  "method": "POST",
+  "description": "Updates the policy in Oso Cloud. The policy should be represented as a string containing [Polar](https://www.osohq.com/docs/modeling-in-polar/reference) code.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Update policy with Polar code\nconst policyCode = `\n  actor User {}\n  resource Repository {\n    permissions = [\"read\", \"write\"];\n    roles = [\"owner\", \"maintainer\"];\n  }\n  has_role(user: User, \"owner\", repo: Repository) if\n    user.id = repo.owner_id;\n`;\nawait oso.policy(policyCode);\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Update policy with Polar code\npolicy_code = \"\"\"\nactor User {}\nresource Repository {\n    permissions = [\"read\", \"write\"];\n    roles = [\"owner\", \"maintainer\"];\n}\nhas_role(user: User, \"owner\", repo: Repository) if\n    user.id = repo.owner_id;\n\"\"\"\noso.policy(policy_code)\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Update policy with Polar code\npolicyCode := `\nactor User {}\nresource Repository {\n    permissions = [\"read\", \"write\"];\n    roles = [\"owner\", \"maintainer\"];\n}\nhas_role(user: User, \"owner\", repo: Repository) if\n    user.id = repo.owner_id;\n`\n    err := osoClient.Policy(policyCode)\n    if err != nil {\n        log.Fatal(err)\n    }\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n\n// Update policy with Polar code\nString policyCode = \"\"\"\n    actor User {}\n    resource Repository {\n        permissions = [\"read\", \"write\"];\n        roles = [\"owner\", \"maintainer\"];\n    }\n    has_role(user: User, \"owner\", repo: Repository) if\n        user.id = repo.owner_id;\n    \"\"\";\n        try {\n            oso.policy(policyCode);\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error updating policy: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Update policy with Polar code\npolicy_code = <<~POLAR\n  actor User {}\n  resource Repository {\n    permissions = [\"read\", \"write\"];\n    roles = [\"owner\", \"maintainer\"];\n  }\n  has_role(user: User, \"owner\", repo: Repository) if\n    user.id = repo.owner_id;\nPOLAR\noso.policy(policy_code)\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Update policy with Polar code\nvar policyCode = @\"\n    actor User {}\n    resource Repository {\n        permissions = [\"\"read\"\", \"\"write\"\"];\n        roles = [\"\"owner\"\", \"\"maintainer\"\"];\n    }\n    has_role(user: User, \"\"owner\"\", repo: Repository) if\n        user.id = repo.owner_id;\n\";\nawait oso.Policy(policyCode);\n"
+    }
+  ]
+}

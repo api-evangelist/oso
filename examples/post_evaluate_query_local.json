@@ -1,0 +1,38 @@
+{
+  "operationId": "post_evaluate_query_local",
+  "path": "/evaluate_query_local",
+  "method": "POST",
+  "description": "Fetches a SQL query that can be run against your database to answer arbitrary questions about authorization.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Generate SQL for field-level authorization\nconst actor = { type: \"User\", id: \"alice\" };\nconst resource = { type: \"Issue\", id: \"123\" };\nconst field = \"description\";\n\nconst sqlQuery = await oso.buildQuery([\n  \"allow_field\", \n  actor, \n  \"read\", \n  resource, \n  field\n]).evaluateLocalSelect({ field_name: field });\n\n// Execute field authorization query\nconst fieldResult = await sql.raw(sqlQuery).execute(db);\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "from oso_cloud import Oso, Value\nimport os\nfrom sqlalchemy import text\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Generate SQL for field-level authorization\nactor = Value(\"User\", \"alice\")\nresource = Value(\"Issue\", \"123\")\nfield = \"description\"\n\nsql_query = oso.build_query((\n  \"allow_field\", \n  actor, \n  \"read\", \n  resource, \n  field\n)).evaluate_local_select({\"field_name\": field})\n\n# Execute field authorization query\nfield_result = session.execute(text(sql_query)).fetchall()\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Generate SQL for field-level authorization\nactor := oso.NewValue(\"User\", \"alice\")\nresource := oso.NewValue(\"Issue\", \"123\")\nfieldVar := oso.NewVariable(\"field\")\n\nsqlQuery, err := osoClient.BuildQuery(\n  oso.NewQueryFact(\"allow_field\", actor, oso.String(\"read\"), resource, fieldVar),\n).EvaluateLocalSelect(map[string]oso.Variable{\"field_name\": fieldVar})\nif err != nil {\n    log.Fatal(err)\n}\n\n// Execute field authorization query\nvar fieldResult []map[string]interface{}\ndb.Raw(sqlQuery).Scan(&fieldResult)\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport java.util.List;\nimport java.util.Map;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Generate SQL for field-level authorization\n            Value actor = new Value(\"User\", \"alice\");\n            Value resource = new Value(\"Issue\", \"123\");\n            String field = \"description\";\n            \n            String sqlQuery = oso.buildQuery(\"allow_field\", actor, \"read\", resource, field)\n                .evaluateLocalSelect(Map.of(\"field_name\", field));\n            \n            // Execute field authorization query\n            List<Map<String, Object>> fieldResult = entityManager.createNativeQuery(sqlQuery)\n                .getResultList();\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Generate SQL for field-level authorization\nactor = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nresource = OsoCloud::Value.new(type: \"Issue\", id: \"123\")\nfield = \"description\"\n\nsql_query = oso.build_query([\"allow_field\", actor, \"read\", resource, field])\n  .evaluate_local_select({\"field_name\" => field})\n\n# Execute field authorization query\nfield_result = ActiveRecord::Base.connection.execute(sql_query)\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\nusing System.Collections.Generic;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate SQL for field-level authorization\nvar actor = new Value(\"User\", \"alice\");\nvar resource = new Value(\"Issue\", \"123\");\nstring field = \"description\";\n\nstring sqlQuery = await oso.BuildQuery(\"allow_field\", actor, \"read\", resource, field)\n    .EvaluateLocalSelect(new Dictionary<string, string> { { \"field_name\", field } });\n\n// Execute field authorization query\nvar fieldResult = await context.Database.SqlQueryRaw<object>(sqlQuery).ToListAsync();\n"
+    }
+  ]
+}

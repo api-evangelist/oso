@@ -1,0 +1,38 @@
+{
+  "operationId": "post_batch",
+  "path": "/batch",
+  "method": "POST",
+  "description": "Deletes and adds many facts in one atomic batch. Facts are inserted and deleted in-order (ie: `insert`ed facts may be `delete`d in the same transaction). `null` can be used as a wildcard in deleted facts. Does not throw an error when the facts to delete are not found.",
+  "codeSamples": [
+    {
+      "lang": "javascript",
+      "label": "Node.js",
+      "source": "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Batch multiple operations\nconst user = { type: \"User\", id: \"alice\" };\nconst org = { type: \"Organization\", id: \"acme\" };\nconst repo = { type: \"Repository\", id: \"anvils\" };\n\nawait oso.batch((tx) => {\n  // Insert new facts\n  tx.insert([\"has_role\", user, \"owner\", org]);\n  tx.insert([\"has_permission\", user, \"admin\", repo]);\n  \n  // Delete old facts\n  tx.delete([\"has_role\", user, \"maintainer\", repo]);\n  tx.delete([\"has_role\", user, \"member\", org]);\n});\n"
+    },
+    {
+      "lang": "python",
+      "label": "Python",
+      "source": "import os\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Batch multiple operations\nuser = Value(\"User\", \"alice\")\norg = Value(\"Organization\", \"acme\")\nrepo = Value(\"Repository\", \"anvils\")\n\nwith oso.batch() as tx:\n    # Insert new facts\n    tx.insert((\"has_role\", user, \"owner\", org))\n    tx.insert((\"has_permission\", user, \"admin\", repo))\n    \n    # Delete old facts\n    tx.delete((\"has_role\", user, \"maintainer\", repo))\n    tx.delete((\"has_role\", user, \"member\", org))\n"
+    },
+    {
+      "lang": "go",
+      "label": "Go",
+      "source": "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Batch multiple operations\nuser := oso.NewValue(\"User\", \"alice\")\norg := oso.NewValue(\"Organization\", \"acme\")\nrepo := oso.NewValue(\"Repository\", \"anvils\")\n\nerr := osoClient.Batch(func(tx oso.BatchTransaction) {\n    // Insert new facts\n    tx.Insert(oso.NewFact(\"has_role\", user, oso.String(\"owner\"), org))\n    tx.Insert(oso.NewFact(\"has_permission\", user, oso.String(\"admin\"), repo))\n    \n    // Delete old facts\n    tx.Delete(oso.NewFact(\"has_role\", user, oso.String(\"maintainer\"), repo))\n    tx.Delete(oso.NewFactPattern(\"has_role\", user, nil, org))\n})\nif err != nil {\n    log.Fatal(err)\n}\n}\n"
+    },
+    {
+      "lang": "java",
+      "label": "Java",
+      "source": "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Batch multiple operations\n            Value user = new Value(\"User\", \"alice\");\n            Value org = new Value(\"Organization\", \"acme\");\n            Value repo = new Value(\"Repository\", \"anvils\");\n            \n            oso.batch((tx) -> {\n                // Insert new facts\n                tx.insert(\"has_role\", user, \"owner\", org);\n                tx.insert(\"has_permission\", user, \"admin\", repo);\n                \n                // Delete old facts\n                tx.delete(\"has_role\", user, \"maintainer\", repo);\n                tx.delete(\"has_role\", user, \"member\", org);\n            });\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+    },
+    {
+      "lang": "ruby",
+      "label": "Ruby",
+      "source": "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Batch multiple operations\nuser = OsoCloud::Value.new(type: \"User\", id: \"alice\")\norg = OsoCloud::Value.new(type: \"Organization\", id: \"acme\")\nrepo = OsoCloud::Value.new(type: \"Repository\", id: \"anvils\")\n\noso.batch do |tx|\n  # Insert new facts\n  tx.tell(\"has_role\", user, \"owner\", org)\n  tx.tell(\"has_permission\", user, \"admin\", repo)\n  \n  # Delete old facts\n  tx.delete(\"has_role\", user, \"maintainer\", repo)\n  tx.delete(\"has_role\", user, \"member\", org)\nend\n"
+    },
+    {
+      "lang": "csharp",
+      "label": "C#",
+      "source": "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Batch multiple operations\nvar user = new Value(\"User\", \"alice\");\nvar org = new Value(\"Organization\", \"acme\");\nvar repo = new Value(\"Repository\", \"anvils\");\n\nawait oso.Batch(tx => {\n    // Insert new facts\n    tx.Insert(\"has_role\", user, \"owner\", org);\n    tx.Insert(\"has_permission\", user, \"admin\", repo);\n    \n    // Delete old facts\n    tx.Delete(\"has_role\", user, \"maintainer\", repo);\n    tx.Delete(\"has_role\", user, \"member\", org);\n});\n"
+    }
+  ]
+}
