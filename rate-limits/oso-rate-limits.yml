@@ -1,0 +1,80 @@
+name: Oso Cloud Rate Limits
+description: >-
+  Rate limiting information for the Oso Cloud Authorization REST API. Oso Cloud
+  enforces rate limits to ensure fair usage and system stability. Rate limiting
+  is transient and short-lived, with no persistent penalty for exceeding limits.
+version: '0.1'
+specificationVersion: '0.1'
+url: https://www.osohq.com/docs
+limits:
+  - name: API Request Rate Limit
+    description: >-
+      Oso Cloud enforces request rate limits on its REST API. When exceeded, the
+      API returns HTTP 429 Too Many Requests. Rate limiting is transient and
+      expires in less than a minute with no ongoing penalty or blocklist
+      tracking.
+    type: requests
+    errorCode: 429
+    errorMessage: Too Many Requests
+    resetPeriod: less than 1 minute
+    persistent: false
+    notes: >-
+      Rate limiting is very transient; it will expire in less than a minute and
+      has no memory (i.e. you will not end up on a list of users more likely to
+      be rate limited in the future). Specific per-plan request rate limits are
+      not publicly disclosed; contact Oso Cloud support for plan-specific limits.
+  - name: API Key Limit per Environment
+    description: >-
+      Each Oso Cloud environment is limited to a maximum of 128 API keys
+      (tokens). This applies across all plans.
+    type: quota
+    limit: 128
+    unit: API keys per environment
+    resetPeriod: N/A
+    notes: >-
+      The 128-token limit applies to API keys per environment. Environments are
+      isolated and each has its own quota.
+  - name: Sandbox Environment Limits
+    description: >-
+      Sandbox environments have additional restrictions compared to production
+      environments. Sandbox limits are documented in the Oso Cloud configuration
+      reference.
+    type: environment
+    url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/sandbox-limits
+    notes: >-
+      Sandbox environments are intended for development and testing and are not
+      subject to the same performance SLAs as production environments.
+performance:
+  - name: End-to-End Latency Target
+    description: Target response time for authorization API calls including network round-trip.
+    value: 10
+    unit: milliseconds
+    qualifier: less than
+    type: latency
+  - name: Edge Node Response Time
+    description: >-
+      Typical response time at Oso Cloud edge nodes before network transit.
+      Distributed edge nodes are deployed across multiple regions.
+    value: 2
+    unit: milliseconds
+    qualifier: typically under
+    type: latency
+  - name: Availability SLA
+    description: >-
+      Oso Cloud availability guarantee measured across regions. Synthetic
+      monitoring confirmed 99.99%+ uptime from January 2024 to January 2025.
+    value: 99.99
+    unit: percent
+    type: availability
+headers:
+  - name: Authorization
+    description: Bearer token authentication header required for all API requests.
+    format: 'Authorization: Bearer <api-key>'
+    required: true
+errorCodes:
+  - code: 429
+    message: Too Many Requests
+    description: >-
+      Returned when the API rate limit is exceeded. Resolves automatically
+      within less than one minute.
+    action: Wait briefly and retry the request. No long-term penalty is applied.

@@ -1,0 +1,143 @@
+name: Oso Cloud FinOps Framework
+description: >-
+  FinOps Framework alignment for Oso Cloud authorization-as-a-service usage.
+  Covers cost visibility, optimization strategies, and governance for teams
+  using Oso Cloud's REST API and SDKs in production workloads.
+version: '1.0'
+specificationVersion: '1.0'
+framework: FinOps Framework
+frameworkVersion: '1.0'
+url: https://www.osohq.com/pricing
+costDrivers:
+  - name: Plan Tier
+    description: >-
+      The primary cost driver is the selected pricing plan tier. Plans range
+      from free (Developer) to custom enterprise pricing. Historical pricing
+      shows Pro at $149/month and Growth/Enterprise at $249+/month.
+    type: fixed
+    unit: per month
+    impact: high
+    notes: >-
+      Annual contracts and volume pricing are available from Oso Cloud. Contact
+      sales to negotiate discounts for committed usage.
+  - name: API Request Volume
+    description: >-
+      API request volume drives plan selection and may influence custom
+      enterprise pricing negotiations. High-volume authorization workloads
+      should be evaluated against plan limits and per-request costs.
+    type: variable
+    unit: per request
+    impact: medium
+    notes: >-
+      Oso Cloud does not publicly publish per-request pricing, but authorization
+      check volume is a key factor in enterprise contract negotiations. Use
+      pagination APIs (listPaginated) to batch large authorization queries
+      efficiently.
+  - name: Environment Count
+    description: >-
+      Each environment (development, staging, production) is a separate Oso
+      Cloud environment, potentially with separate API key quotas and
+      configurations. Multiple environments may affect plan costs.
+    type: fixed
+    unit: per environment
+    impact: low
+    notes: >-
+      Use sandbox environments for development and testing to minimize production
+      API usage and associated costs.
+  - name: SDK and Integration Complexity
+    description: >-
+      Engineering time spent integrating Oso Cloud SDKs across Node.js, Python,
+      Go, Java, Ruby, and .NET represents an indirect cost. Local Authorization
+      mode can reduce per-request API calls by offloading checks to the database.
+    type: indirect
+    unit: engineering hours
+    impact: medium
+    notes: >-
+      Local Authorization (database-native queries) can significantly reduce
+      API call volume by generating SQL queries instead of making individual
+      authorization API calls for each permission check.
+optimization:
+  - name: Use Local Authorization for High-Volume Checks
+    description: >-
+      Oso Cloud's Local Authorization feature generates database-native SQL
+      queries instead of making individual REST API calls. This can dramatically
+      reduce API request volume for list and filter operations over large
+      datasets.
+    impact: high
+    effort: medium
+    type: architecture
+  - name: Batch Fact Management with Bulk APIs
+    description: >-
+      Use the bulk fact APIs (Post bulk, Post bulk load, Post batch) to manage
+      authorization data in atomic transactions rather than individual fact
+      insertions. This reduces API call overhead and improves consistency.
+    impact: medium
+    effort: low
+    type: efficiency
+  - name: Use Paginated List API
+    description: >-
+      For large authorization datasets, use the listPaginated API method to
+      retrieve results in manageable pages rather than attempting to load all
+      results at once. This avoids timeouts and reduces per-request payload size.
+    impact: low
+    effort: low
+    type: efficiency
+  - name: Negotiate Annual Contracts
+    description: >-
+      Oso Cloud offers annual contracts with volume pricing discounts. For
+      predictable authorization workloads, committing to an annual plan can
+      reduce monthly costs compared to month-to-month billing.
+    impact: high
+    effort: low
+    type: commercial
+  - name: Consolidate Environments
+    description: >-
+      Minimize the number of active Oso Cloud environments by consolidating
+      development and testing into sandbox environments. Reserve production
+      environments for live workloads.
+    impact: low
+    effort: low
+    type: governance
+visibility:
+  - name: Authorization Logs
+    description: >-
+      Use Oso Cloud authorization logs to monitor API usage patterns, identify
+      high-frequency authorization checks, and optimize policy evaluation.
+      Logs can be filtered by decision results, rule names, and argument types.
+    url: https://www.osohq.com/docs
+    type: monitoring
+  - name: Audit Trail
+    description: >-
+      Oso Cloud provides a full audit trail of authorization decisions. Review
+      audit data regularly to identify unused permissions and optimization
+      opportunities aligned with least-privilege principles.
+    type: compliance
+  - name: Status Page
+    description: >-
+      Monitor Oso Cloud service availability and incident history via the
+      public status page at oso.statuspage.io. Service disruptions may impact
+      application availability and should be factored into SLA calculations.
+    url: https://oso.statuspage.io/
+    type: reliability
+governance:
+  - name: API Key Rotation
+    description: >-
+      Rotate Oso Cloud API keys regularly to minimize security exposure. Each
+      environment supports up to 128 API keys, allowing for safe rotation
+      without service interruption.
+    frequency: quarterly
+    type: security
+  - name: Policy Review
+    description: >-
+      Regularly review and audit Polar authorization policies to remove unused
+      rules and reduce policy complexity, which can improve authorization
+      evaluation performance.
+    frequency: monthly
+    type: optimization
+  - name: Plan Review
+    description: >-
+      Annually review the selected Oso Cloud pricing plan against actual usage
+      patterns to ensure the plan tier aligns with organizational needs and
+      to renegotiate volume pricing if warranted.
+    frequency: annually
+    type: commercial

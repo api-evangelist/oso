@@ -1,0 +1,103 @@
+name: Oso Cloud Plans and Pricing
+description: >-
+  Oso Cloud offers tiered pricing plans for its authorization-as-a-service
+  platform. Plans scale from a free developer tier through startup and growth
+  options to enterprise contracts with custom pricing and SLAs.
+version: '0.1'
+specificationVersion: '0.1'
+url: https://www.osohq.com/pricing
+plans:
+  - name: Developer
+    description: >-
+      Free plan for developers learning and experimenting with Oso Cloud
+      authorization. Includes access to the full Oso Cloud API and SDK support
+      with community-level support.
+    price: 0
+    priceCurrency: USD
+    billingPeriod: monthly
+    features:
+      - Full Oso Cloud Authorization API access
+      - Polar policy language for RBAC, ReBAC, ABAC
+      - SDKs for Node.js, Python, Go, Java, Ruby, and .NET
+      - Authorization facts management
+      - Policy testing and explain UI
+      - Community Slack support
+      - Sandbox environment
+      - Demo environment with pre-populated data
+    limits:
+      apiKeys: 128 per environment
+      support: Community Slack only
+  - name: Startup
+    description: >-
+      Plan for growing teams that need basic SLAs for production workloads.
+      Includes all Developer features with enhanced support and production-grade
+      SLAs.
+    price: 149
+    priceCurrency: USD
+    billingPeriod: monthly
+    features:
+      - All Developer plan features
+      - Production SLAs with 99.99% uptime guarantee
+      - Sub-10ms end-to-end API response times
+      - Distributed edge nodes across regions
+      - Priority support
+      - Local Authorization (database-native queries)
+      - Fallback node for offline authorization
+      - SSO via OIDC for Oso Cloud UI
+    limits:
+      apiKeys: 128 per environment
+      responseTime: Less than 10ms end-to-end
+      availability: 99.99% uptime
+  - name: Growth
+    description: >-
+      Plan for organizations that need advanced security features, enhanced
+      SLAs, and dedicated support. Adds advanced audit, monitoring, and
+      integration capabilities on top of Startup features.
+    price: 249
+    priceCurrency: USD
+    billingPeriod: monthly
+    features:
+      - All Startup plan features
+      - Advanced audit trail and authorization logs
+      - Log filtering by decision results, rule names, and argument types
+      - Paginated list API for large datasets
+      - Advanced context facts support
+      - Query Builder API for flexible authorization queries
+      - Recursion support in local authorization
+      - Dedicated support channel
+    limits:
+      apiKeys: 128 per environment
+      responseTime: Less than 10ms end-to-end
+      availability: 99.99% uptime
+  - name: Enterprise
+    description: >-
+      Custom enterprise plan for large organizations with advanced security,
+      compliance, and deployment requirements. Includes white-glove onboarding,
+      custom data residency, and 24/7 dedicated support.
+    price: 0
+    priceCurrency: USD
+    billingPeriod: monthly
+    priceCustom: true
+    priceLabel: Contact for pricing
+    features:
+      - All Growth plan features
+      - Custom data residency agreements
+      - Cloud or on-premises deployment options
+      - SIEM integration
+      - Custom alert triggers (unlimited)
+      - White-glove onboarding and training
+      - 24/7 dedicated Slack and Zoom support
+      - Custom data retention policies
+      - Annual contracts with volume pricing
+      - Custom user limits
+      - Enterprise SLA agreements
+    limits:
+      apiKeys: Custom per environment
+      responseTime: Custom SLA
+      availability: Custom SLA
+notes: >-
+  Pricing shown is based on publicly available information as of 2026. Oso Cloud
+  also offers volume pricing and annual contract discounts. A free-forever
+  Developer plan is available. Contact Oso Cloud sales for the most current
+  pricing details. The original 2022 pricing showed a Pro plan at $149/month
+  and Enterprise at $249/month; current pricing may differ.

@@ -1,0 +1,83 @@
+aid: oso
+name: Oso Cloud
+description: >-
+  Oso Cloud is an authorization-as-a-service platform that provides a REST API
+  for defining and enforcing relationship-based access control policies. It
+  enables developers to model RBAC, ReBAC, and ABAC authorization patterns,
+  manage authorization facts, and query permissions at runtime with sub-10ms
+  latency and 99.99% availability.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/oso/refs/heads/main/apis.yml
+created: '2026-06-13'
+modified: '2026-06-13'
+specificationVersion: '0.19'
+type: Index
+tags:
+  - Authorization
+  - Access Control
+  - RBAC
+  - ReBAC
+  - ABAC
+  - Permissions
+  - Policy
+  - Security
+  - Identity
+apis:
+  - name: Oso Cloud Authorization API
+    description: >-
+      The Oso Cloud Authorization API provides REST endpoints for checking
+      permissions, managing authorization facts, querying policies, and
+      enforcing access control across applications and services. Core operations
+      include authorize (boolean permission check), list (get authorized
+      resources), actions (get allowed actions), query, and batch fact
+      management. The API uses the Polar policy language for defining
+      authorization logic and supports context facts for request-time data.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    baseURL: https://api.osohq.com/api
+    humanURL: https://www.osohq.com/docs
+    properties:
+      - type: Documentation
+        url: https://www.osohq.com/docs
+      - type: OpenAPI
+        url: https://www.osohq.com/docs/reference/api
+      - type: Authentication
+        url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
+    contact:
+      - FN: Oso Cloud Support
+        url: https://www.osohq.com/company/contact
+    tags:
+      - Authorization
+      - Permissions
+      - Access Control
+      - Policy Management
+      - Facts
+      - RBAC
+      - ReBAC
+common:
+  - type: Website
+    url: https://www.osohq.com
+  - type: Documentation
+    url: https://www.osohq.com/docs
+  - type: GitHubOrg
+    url: https://github.com/osohq
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/osohq
+  - type: Blog
+    url: https://www.osohq.com/blog
+  - type: Pricing
+    url: https://www.osohq.com/pricing
+  - type: StatusPage
+    url: https://oso.statuspage.io/
+  - type: X
+    url: https://x.com/osohq
+  - type: Changelog
+    url: https://www.osohq.com/docs/changelog/whats-new
+  - type: Plans
+    url: plans/oso-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/oso-rate-limits.yml
+  - type: FinOps
+    url: finops/oso-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
