@@ -72,7 +72,7 @@ common:
     url: https://oso.statuspage.io/
   - type: X
     url: https://x.com/osohq
-  - type: Changelog
+  - type: ChangeLog
     url: https://www.osohq.com/docs/changelog/whats-new
   - type: Plans
     url: plans/oso-plans-pricing.yml
