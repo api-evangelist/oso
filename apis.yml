@@ -56,6 +56,12 @@ apis:
       - RBAC
       - ReBAC
 common:
+  - type: TrustCenter
+    url: security/oso-trust-center.yml
+  - type: DomainSecurity
+    url: security/oso-domain-security.yml
+  - type: Authentication
+    url: authentication/oso-authentication.yml
   - type: Website
     url: https://www.osohq.com
   - type: Documentation

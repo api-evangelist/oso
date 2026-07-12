@@ -1,0 +1,12 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://www.osohq.com/company/security
+url: https://www.osohq.com/company/security
+certifications:
+- SOC 2
+evidence:
+- source: https://www.osohq.com/company/security
+  keywords:
+  - soc 2
+  - trust center
