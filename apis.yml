@@ -56,6 +56,8 @@ apis:
       - RBAC
       - ReBAC
 common:
+  - type: AgenticAccess
+    url: agentic-access/oso-agentic-access.yml
   - type: TrustCenter
     url: security/oso-trust-center.yml
   - type: DomainSecurity
