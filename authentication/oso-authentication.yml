@@ -8,7 +8,7 @@ schemes:
 - name: ApiKey
   type: http
   scheme: bearer
-  bearerFormat: Bearer e_0123_123_token0123
+  bearerFormat: Bearer [example key]
   description: Requires an API key to access.
   sources:
   - openapi/oso-authorization-openapi.yml
