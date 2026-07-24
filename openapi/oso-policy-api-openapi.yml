@@ -1,0 +1,412 @@
+openapi: 3.0.3
+info:
+  title: Oso Cloud HTTP Centralized Authorization Data Policy API
+  version: 0.1.0
+  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/'
+servers:
+- url: https://api.osohq.com/api/
+tags:
+- name: Policy
+paths:
+  /policy:
+    get:
+      tags:
+      - Policy
+      description: Gets the currently active policy in Oso Cloud. The policy is expressed as a string containing [Polar](https://www.osohq.com/docs/modeling-in-polar/reference) code.
+      operationId: get_policy
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: integer
+          format: int64
+          nullable: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPolicyResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - ApiKey: []
+    post:
+      tags:
+      - Policy
+      description: Updates the policy in Oso Cloud. The policy should be represented as a string containing [Polar](https://www.osohq.com/docs/modeling-in-polar/reference) code.
+      operationId: post_policy
+      parameters:
+      - name: force
+        in: query
+        required: true
+        schema:
+          type: boolean
+      - name: show_suggestions
+        in: query
+        required: true
+        schema:
+          type: boolean
+      - name: fail_fast
+        in: query
+        required: true
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Policy'
+        required: true
+      responses:
+        '200':
+          description: The policy was updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+        '202':
+          description: The policy was not updated because it is unchanged.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavePolicyError'
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Update policy with Polar code\nconst policyCode = `\n  actor User {}\n  resource Repository {\n    permissions = [\"read\", \"write\"];\n    roles = [\"owner\", \"maintainer\"];\n  }\n  has_role(user: User, \"owner\", repo: Repository) if\n    user.id = repo.owner_id;\n`;\nawait oso.policy(policyCode);\n"
+      - lang: python
+        label: Python
+        source: "import os\nfrom oso_cloud import Oso\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Update policy with Polar code\npolicy_code = \"\"\"\nactor User {}\nresource Repository {\n    permissions = [\"read\", \"write\"];\n    roles = [\"owner\", \"maintainer\"];\n}\nhas_role(user: User, \"owner\", repo: Repository) if\n    user.id = repo.owner_id;\n\"\"\"\noso.policy(policy_code)\n"
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Update policy with Polar code\npolicyCode := `\nactor User {}\nresource Repository {\n    permissions = [\"read\", \"write\"];\n    roles = [\"owner\", \"maintainer\"];\n}\nhas_role(user: User, \"owner\", repo: Repository) if\n    user.id = repo.owner_id;\n`\n    err := osoClient.Policy(policyCode)\n    if err != nil {\n        log.Fatal(err)\n    }\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n\n// Update policy with Polar code\nString policyCode = \"\"\"\n    actor User {}\n    resource Repository {\n        permissions = [\"read\", \"write\"];\n        roles = [\"owner\", \"maintainer\"];\n    }\n    has_role(user: User, \"owner\", repo: Repository) if\n        user.id = repo.owner_id;\n    \"\"\";\n        try {\n            oso.policy(policyCode);\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error updating policy: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Update policy with Polar code\npolicy_code = <<~POLAR\n  actor User {}\n  resource Repository {\n    permissions = [\"read\", \"write\"];\n    roles = [\"owner\", \"maintainer\"];\n  }\n  has_role(user: User, \"owner\", repo: Repository) if\n    user.id = repo.owner_id;\nPOLAR\noso.policy(policy_code)\n"
+      - lang: csharp
+        label: C#
+        source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Update policy with Polar code\nvar policyCode = @\"\n    actor User {}\n    resource Repository {\n        permissions = [\"\"read\"\", \"\"write\"\"];\n        roles = [\"\"owner\"\", \"\"maintainer\"\"];\n    }\n    has_role(user: User, \"\"owner\"\", repo: Repository) if\n        user.id = repo.owner_id;\n\";\nawait oso.Policy(policyCode);\n"
+  /policy_metadata:
+    get:
+      tags:
+      - Policy
+      description: Returns metadata about the currently active policy.
+      operationId: get_policy_metadata
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: integer
+          format: int64
+          nullable: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPolicyMetadataResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: 'import { Oso } from ''oso-cloud'';
+
+
+          const apiKey = process.env.OSO_CLOUD_API_KEY;
+
+          const oso = new Oso("https://cloud.osohq.com", apiKey);
+
+
+          // Get policy metadata
+
+          const metadata = await oso.getPolicyMetadata();
+
+
+          // Access resource information
+
+          console.log(metadata.resources.keys());        // List all resources
+
+          console.log(metadata.resources.get("Repository")); // Get specific resource metadata
+
+          '
+      - lang: python
+        label: Python
+        source: 'import os
+
+          from oso_cloud import Oso
+
+
+          oso = Oso(api_key=os.environ.get(''OSO_CLOUD_API_KEY'', None))
+
+
+          # Get policy metadata
+
+          metadata = oso.get_policy_metadata()
+
+
+          # Access resource information
+
+          print(metadata.resources.keys())               # List all resources
+
+          print(metadata.resources["Repository"])        # Get specific resource metadata
+
+          '
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Get policy metadata\n    metadata, err := osoClient.GetPolicyMetadata()\n    if err != nil {\n        log.Fatal(err)\n    }\n}\n\n// Access resource information\nfor resourceName := range metadata.Resources {\n    fmt.Printf(\"Resource: %s\\n\", resourceName)\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n\n        // Get policy metadata\n        try {\n            PolicyMetadata metadata = oso.getPolicyMetadata();\n            \n            // Access resource information\n            System.out.println(metadata.getResources().keySet());\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error getting policy metadata: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: 'require ''oso-cloud''
+
+
+          api_key = ENV.fetch(''OSO_CLOUD_API_KEY'', nil)
+
+          oso = OsoCloud::Oso.new(url: "https://cloud.osohq.com", api_key: api_key)
+
+
+          # Get policy metadata
+
+          metadata = oso.get_policy_metadata
+
+
+          # Access resource information
+
+          puts metadata.resources.keys
+
+          '
+      - lang: csharp
+        label: C#
+        source: 'using OsoCloud;
+
+
+          string? apiKey = Environment.GetEnvironmentVariable("OSO_CLOUD_API_KEY");
+
+          var oso = new Oso("https://api.osohq.com", apiKey);
+
+
+          // Get policy metadata
+
+          var metadata = await oso.GetPolicyMetadata();
+
+
+          // Access resource information
+
+          Console.WriteLine(string.Join(", ", metadata.Resources.Keys));
+
+          '
+components:
+  schemas:
+    PolicyMetadata:
+      type: object
+      required:
+      - resources
+      properties:
+        resources:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ResourceBlockData'
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    ApiResult:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    GetPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/Policy'
+          nullable: true
+    SavePolicyError:
+      oneOf:
+      - type: object
+        required:
+        - error_type
+        - message
+        properties:
+          error_type:
+            type: string
+            enum:
+            - Generic
+          message:
+            type: string
+      - type: object
+        required:
+        - error_type
+        - errors
+        - message
+        properties:
+          error_type:
+            type: string
+            enum:
+            - Validation
+          message:
+            type: string
+          errors:
+            type: array
+            items:
+              $ref: '#/components/schemas/PolicyError'
+      - type: object
+        required:
+        - error_type
+        - message
+        - test_results
+        properties:
+          error_type:
+            type: string
+            enum:
+            - TestsFailed
+          message:
+            type: string
+          test_results:
+            $ref: '#/components/schemas/PolicyTestResult'
+    PolicyFailure:
+      description: All known failure modes for a submitted policy test. Encountering any of these scenarios means the policy test has failed.
+      oneOf:
+      - description: Polar file failed validation.
+        type: string
+        enum:
+        - ValidationFailed
+      - description: An assertion failed in an executed test.
+        type: string
+        enum:
+        - AssertionFailed
+      - description: Server hit an unexpected error.
+        type: string
+        enum:
+        - ServerError
+    ResourceBlockData:
+      type: object
+      required:
+      - permissions
+      - relations
+      - roles
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        relations:
+          type: object
+          additionalProperties:
+            type: string
+    PolicyTestResult:
+      description: Result of a Policy test API request. Sent to `oso-cloud` CLI as JSON.
+      type: object
+      required:
+      - errors
+      - success
+      - tests
+      properties:
+        success:
+          description: Did the policy test succeed?
+          type: boolean
+        errors:
+          description: What errors did we encounter?
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyError'
+        tests:
+          description: What tests did we execute?
+          type: array
+          items:
+            $ref: '#/components/schemas/TestSummary'
+    PolicyError:
+      description: Error report for a failed Polar policy test, to be displayed to user. Sent to `oso-cloud` CLI as JSON.
+      type: object
+      required:
+      - error_type
+      - message
+      properties:
+        error_type:
+          description: Type of error encountered.
+          allOf:
+          - $ref: '#/components/schemas/PolicyFailure'
+        message:
+          description: Error message to display to the user.
+          type: string
+    Policy:
+      type: object
+      required:
+      - src
+      properties:
+        filename:
+          type: string
+          nullable: true
+        src:
+          type: string
+    GetPolicyMetadataResult:
+      type: object
+      required:
+      - metadata
+      properties:
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+    TestSummary:
+      description: Results of executing a single test. Sent to `oso-cloud` CLI as JSON.
+      type: object
+      required:
+      - name
+      - passed
+      - total
+      properties:
+        name:
+          description: Name of test.
+          type: string
+        passed:
+          description: How many assertions passed?
+          type: integer
+          format: uint
+          minimum: 0
+        total:
+          description: How many assertions in total?
+          type: integer
+          format: uint
+          minimum: 0
+  securitySchemes:
+    ApiKey:
+      description: Requires an API key to access.
+      type: http
+      scheme: bearer
+      bearerFormat: Bearer e_0123_123_token0123

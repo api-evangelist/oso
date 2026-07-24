@@ -1,0 +1,462 @@
+openapi: 3.0.3
+info:
+  title: Oso Cloud HTTP Centralized Authorization Data API
+  version: 0.1.0
+  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/'
+servers:
+- url: https://api.osohq.com/api/
+tags:
+- name: Centralized Authorization Data
+paths:
+  /facts:
+    post:
+      tags:
+      - Centralized Authorization Data
+      description: 'Adds a new fact.
+
+
+        DEPRECATED: Prefer `POST /batch` with payload `[{"inserts": [<fact>]}]`.'
+      operationId: post_facts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Fact'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      deprecated: true
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Insert a single fact\nawait oso.insert([\n  \"has_role\", \n  { type: \"User\", id: \"alice\" }, \n  \"maintainer\", \n  { type: \"Repository\", id: \"anvils\" }\n]);\n"
+      - lang: python
+        label: Python
+        source: 'import os
+
+          from oso_cloud import Oso, Value
+
+
+          oso = Oso(api_key=os.environ.get(''OSO_CLOUD_API_KEY'', None))
+
+
+          # Insert a single fact
+
+          user = Value("User", "alice")
+
+          repo = Value("Repository", "anvils")
+
+          oso.insert(("has_role", user, "maintainer", repo))
+
+          '
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n    // Insert a single fact\n    alice := oso.NewValue(\"User\", \"alice\")\n    repo := oso.NewValue(\"Repository\", \"anvils\")\n    err := osoClient.Insert(oso.NewFact(\"has_role\", alice, oso.String(\"maintainer\"), repo))\n    if err != nil {\n        log.Fatal(err)\n    }\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Insert a single fact\n            Value user = new Value(\"User\", \"alice\");\n            Value repo = new Value(\"Repository\", \"anvils\");\n            oso.insert(\"has_role\", user, \"maintainer\", repo);\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: 'require ''oso-cloud''
+
+
+          api_key = ENV.fetch(''OSO_CLOUD_API_KEY'', nil)
+
+          oso = OsoCloud::Oso.new(url: "https://cloud.osohq.com", api_key: api_key)
+
+
+          # Insert a single fact
+
+          user = OsoCloud::Value.new(type: "User", id: "alice")
+
+          repo = OsoCloud::Value.new(type: "Repository", id: "anvils")
+
+          oso.tell("has_role", user, "maintainer", repo)
+
+          '
+      - lang: csharp
+        label: C#
+        source: 'using OsoCloud;
+
+
+          string? apiKey = Environment.GetEnvironmentVariable("OSO_CLOUD_API_KEY");
+
+          var oso = new Oso("https://api.osohq.com", apiKey);
+
+
+          // Insert a single fact
+
+          var user = new Value("User", "alice");
+
+          var repo = new Value("Repository", "anvils");
+
+          await oso.Insert("has_role", user, "maintainer", repo);
+
+          '
+    delete:
+      tags:
+      - Centralized Authorization Data
+      description: 'Deletes a fact. Does not throw an error when the fact is not found.
+
+
+        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": [<fact>]}]`.'
+      operationId: delete_facts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Fact'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      deprecated: true
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Delete specific fact\nawait oso.delete([\n  \"has_role\", \n  { type: \"User\", id: \"alice\" }, \n  \"maintainer\", \n  { type: \"Repository\", id: \"anvils\" }\n]);\n\n// Delete using patterns (null = wildcard)\nawait oso.delete([\"has_role\", { type: \"User\", id: \"alice\" }, null, null]); // All roles for alice\n"
+      - lang: python
+        label: Python
+        source: 'import os
+
+          from oso_cloud import Oso, Value
+
+
+          oso = Oso(api_key=os.environ.get(''OSO_CLOUD_API_KEY'', None))
+
+
+          # Delete specific fact
+
+          user = Value("User", "alice")
+
+          repo = Value("Repository", "anvils")
+
+          oso.delete(("has_role", user, "maintainer", repo))
+
+
+          # Delete using patterns
+
+          oso.delete(("has_role", user, None, None))  # All roles for user
+
+          '
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Delete specific fact\nuser := oso.NewValue(\"User\", \"alice\")\nrepo := oso.NewValue(\"Repository\", \"anvils\")\nerr := osoClient.Delete(oso.NewFact(\"has_role\", user, oso.String(\"maintainer\"), repo))\n\n// Delete using patterns\nerr = osoClient.Delete(oso.NewFactPattern(\n  \"has_role\", \n  user, \n  nil,  // Any role\n  oso.NewValueOfType(\"Repository\")  // Any repo\n))\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Delete specific fact\n            Value user = new Value(\"User\", \"alice\");\n            Value repo = new Value(\"Repository\", \"anvils\");\n            oso.delete(\"has_role\", user, \"maintainer\", repo);\n            \n            // Delete using patterns (null = wildcard)\n            oso.delete(\"has_role\", user, null, null);  // All roles for user\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: 'require ''oso-cloud''
+
+
+          api_key = ENV.fetch(''OSO_CLOUD_API_KEY'', nil)
+
+          oso = OsoCloud::Oso.new(url: "https://cloud.osohq.com", api_key: api_key)
+
+
+          # Delete specific fact
+
+          user = OsoCloud::Value.new(type: "User", id: "alice")
+
+          repo = OsoCloud::Value.new(type: "Repository", id: "anvils")
+
+          oso.delete("has_role", user, "maintainer", repo)
+
+
+          # Delete using patterns (nil = wildcard)
+
+          oso.delete("has_role", user, nil, nil)  # All roles for user
+
+          '
+      - lang: csharp
+        label: C#
+        source: 'using OsoCloud;
+
+
+          string? apiKey = Environment.GetEnvironmentVariable("OSO_CLOUD_API_KEY");
+
+          var oso = new Oso("https://api.osohq.com", apiKey);
+
+
+          // Delete specific fact
+
+          var user = new Value("User", "alice");
+
+          var repo = new Value("Repository", "anvils");
+
+          await oso.Delete("has_role", user, "maintainer", repo);
+
+
+          // Delete using patterns (null = wildcard)
+
+          await oso.Delete("has_role", user, null, null);  // All roles for user
+
+          '
+  /bulk_load:
+    post:
+      tags:
+      - Centralized Authorization Data
+      description: 'Adds many facts at once.
+
+
+        DEPRECATED: Prefer `POST /batch` with payload `[{"inserts": <bulk_data>}]`.'
+      operationId: post_bulk_load
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Fact'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      deprecated: true
+      security:
+      - ApiKey: []
+  /bulk_delete:
+    post:
+      tags:
+      - Centralized Authorization Data
+      description: 'Delete many facts in a single transaction.
+
+
+        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": <bulk_data>}]`.'
+      operationId: post_bulk_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Fact'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      deprecated: true
+      security:
+      - ApiKey: []
+  /bulk:
+    post:
+      tags:
+      - Centralized Authorization Data
+      description: 'Deletes and adds many facts in one atomic transaction. The deletions are performed before the adds. `null` can be used as a wildcard in facts in delete. Does not throw an error when the facts to delete are not found.
+
+
+        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": <bulk.delete>}, {"inserts": <bulk.tell>}]`.'
+      operationId: post_bulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bulk'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      deprecated: true
+      security:
+      - ApiKey: []
+  /batch:
+    post:
+      tags:
+      - Centralized Authorization Data
+      description: 'Deletes and adds many facts in one atomic batch. Facts are inserted and deleted in-order (ie: `insert`ed facts may be `delete`d in the same transaction). `null` can be used as a wildcard in deleted facts. Does not throw an error when the facts to delete are not found.'
+      operationId: post_batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/FactChangeset'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Batch multiple operations\nconst user = { type: \"User\", id: \"alice\" };\nconst org = { type: \"Organization\", id: \"acme\" };\nconst repo = { type: \"Repository\", id: \"anvils\" };\n\nawait oso.batch((tx) => {\n  // Insert new facts\n  tx.insert([\"has_role\", user, \"owner\", org]);\n  tx.insert([\"has_permission\", user, \"admin\", repo]);\n  \n  // Delete old facts\n  tx.delete([\"has_role\", user, \"maintainer\", repo]);\n  tx.delete([\"has_role\", user, \"member\", org]);\n});\n"
+      - lang: python
+        label: Python
+        source: "import os\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Batch multiple operations\nuser = Value(\"User\", \"alice\")\norg = Value(\"Organization\", \"acme\")\nrepo = Value(\"Repository\", \"anvils\")\n\nwith oso.batch() as tx:\n    # Insert new facts\n    tx.insert((\"has_role\", user, \"owner\", org))\n    tx.insert((\"has_permission\", user, \"admin\", repo))\n    \n    # Delete old facts\n    tx.delete((\"has_role\", user, \"maintainer\", repo))\n    tx.delete((\"has_role\", user, \"member\", org))\n"
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Batch multiple operations\nuser := oso.NewValue(\"User\", \"alice\")\norg := oso.NewValue(\"Organization\", \"acme\")\nrepo := oso.NewValue(\"Repository\", \"anvils\")\n\nerr := osoClient.Batch(func(tx oso.BatchTransaction) {\n    // Insert new facts\n    tx.Insert(oso.NewFact(\"has_role\", user, oso.String(\"owner\"), org))\n    tx.Insert(oso.NewFact(\"has_permission\", user, oso.String(\"admin\"), repo))\n    \n    // Delete old facts\n    tx.Delete(oso.NewFact(\"has_role\", user, oso.String(\"maintainer\"), repo))\n    tx.Delete(oso.NewFactPattern(\"has_role\", user, nil, org))\n})\nif err != nil {\n    log.Fatal(err)\n}\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Batch multiple operations\n            Value user = new Value(\"User\", \"alice\");\n            Value org = new Value(\"Organization\", \"acme\");\n            Value repo = new Value(\"Repository\", \"anvils\");\n            \n            oso.batch((tx) -> {\n                // Insert new facts\n                tx.insert(\"has_role\", user, \"owner\", org);\n                tx.insert(\"has_permission\", user, \"admin\", repo);\n                \n                // Delete old facts\n                tx.delete(\"has_role\", user, \"maintainer\", repo);\n                tx.delete(\"has_role\", user, \"member\", org);\n            });\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Batch multiple operations\nuser = OsoCloud::Value.new(type: \"User\", id: \"alice\")\norg = OsoCloud::Value.new(type: \"Organization\", id: \"acme\")\nrepo = OsoCloud::Value.new(type: \"Repository\", id: \"anvils\")\n\noso.batch do |tx|\n  # Insert new facts\n  tx.tell(\"has_role\", user, \"owner\", org)\n  tx.tell(\"has_permission\", user, \"admin\", repo)\n  \n  # Delete old facts\n  tx.delete(\"has_role\", user, \"maintainer\", repo)\n  tx.delete(\"has_role\", user, \"member\", org)\nend\n"
+      - lang: csharp
+        label: C#
+        source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Batch multiple operations\nvar user = new Value(\"User\", \"alice\");\nvar org = new Value(\"Organization\", \"acme\");\nvar repo = new Value(\"Repository\", \"anvils\");\n\nawait oso.Batch(tx => {\n    // Insert new facts\n    tx.Insert(\"has_role\", user, \"owner\", org);\n    tx.Insert(\"has_permission\", user, \"admin\", repo);\n    \n    // Delete old facts\n    tx.Delete(\"has_role\", user, \"maintainer\", repo);\n    tx.Delete(\"has_role\", user, \"member\", org);\n});\n"
+  /clear_data:
+    post:
+      tags:
+      - Centralized Authorization Data
+      operationId: clear_data
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - ApiKey: []
+components:
+  schemas:
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    ApiResult:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    Value:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        id:
+          type: string
+          nullable: true
+    Bulk:
+      type: object
+      required:
+      - delete
+      - tell
+      properties:
+        delete:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+        tell:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    FactChangeset:
+      description: A grouped run of facts to insert or delete. Inserted facts must contain concrete fact args, but deleted facts may contain wildcards.
+      anyOf:
+      - type: object
+        required:
+        - inserts
+        properties:
+          inserts:
+            type: array
+            items:
+              $ref: '#/components/schemas/Fact'
+      - type: object
+        required:
+        - deletes
+        properties:
+          deletes:
+            type: array
+            items:
+              $ref: '#/components/schemas/Fact'
+    Fact:
+      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+  securitySchemes:
+    ApiKey:
+      description: Requires an API key to access.
+      type: http
+      scheme: bearer
+      bearerFormat: Bearer e_0123_123_token0123

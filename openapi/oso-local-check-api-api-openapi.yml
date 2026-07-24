@@ -1,0 +1,648 @@
+openapi: 3.0.3
+info:
+  title: Oso Cloud HTTP Centralized Authorization Data Local Check API API
+  version: 0.1.0
+  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/'
+servers:
+- url: https://api.osohq.com/api/
+tags:
+- name: Local Check API
+paths:
+  /actions_query:
+    post:
+      tags:
+      - Local Check API
+      operationId: post_actions_query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocalActionsQuery'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalActionsResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: 'import { Oso } from ''oso-cloud'';
+
+
+          const apiKey = process.env.OSO_CLOUD_API_KEY;
+
+          const oso = new Oso("https://cloud.osohq.com", apiKey);
+
+
+          // Generate actions query SQL
+
+          const alice = { type: "User", id: "alice" };
+
+          const issue = { type: "Issue", id: "123" };
+
+          const query = await oso.actionsLocal(alice, issue);
+
+
+          // Execute with database
+
+          const result = await sql.raw(query).execute(db);
+
+          const actions = result.rows.map(row => row.actions);
+
+
+          console.log("Available actions:", actions);
+
+          '
+      - lang: python
+        label: Python
+        source: 'from oso_cloud import Oso, Value
+
+          import os
+
+          from sqlalchemy import text
+
+          from oso_cloud import Oso, Value
+
+
+          oso = Oso(api_key=os.environ.get(''OSO_CLOUD_API_KEY'', None))
+
+
+          # Generate actions query SQL
+
+          alice = Value("User", "alice")
+
+          issue = Value("Issue", "123")
+
+          query = oso.actions_local(alice, issue)
+
+
+          # Execute with SQLAlchemy
+
+          actions = list(session.execute(text(query)).scalars())
+
+
+          print(f"Available actions: {actions}")
+
+          '
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n    // Generate actions query SQL\n    alice := oso.NewValue(\"User\", \"alice\")\n    issue := oso.NewValue(\"Issue\", \"123\")\nquery, err := osoClient.ActionsLocal(alice, issue)\nif err != nil {\n    log.Fatal(err)\n}\n\n// Execute with GORM\nvar actions []string\ndb.Raw(query).Pluck(\"actions\", &actions)\n\nfmt.Printf(\"Available actions: %v\\n\", actions)\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport java.util.List;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Generate actions query SQL\n            Value alice = new Value(\"User\", \"alice\");\n            Value issue = new Value(\"Issue\", \"123\");\n            String query = oso.actionsLocal(alice, issue);\n            \n            // Execute with database (example with JPA/Hibernate)\n            List<String> actions = entityManager.createNativeQuery(query)\n                .getResultList();\n            \n            System.out.println(\"Available actions: \" + actions);\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: 'require ''oso-cloud''
+
+
+          api_key = ENV.fetch(''OSO_CLOUD_API_KEY'', nil)
+
+          oso = OsoCloud::Oso.new(url: "https://cloud.osohq.com", api_key: api_key)
+
+
+          # Generate actions query SQL
+
+          alice = OsoCloud::Value.new(type: "User", id: "alice")
+
+          issue = OsoCloud::Value.new(type: "Issue", id: "123")
+
+          query = oso.actions_local(alice, issue)
+
+
+          # Execute with ActiveRecord
+
+          actions = ActiveRecord::Base.connection.execute(query).values.flatten
+
+
+          puts "Available actions: #{actions}"
+
+          '
+      - lang: csharp
+        label: C#
+        source: 'using OsoCloud;
+
+          using System.Data;
+
+
+          string? apiKey = Environment.GetEnvironmentVariable("OSO_CLOUD_API_KEY");
+
+          var oso = new Oso("https://api.osohq.com", apiKey);
+
+
+          // Generate actions query SQL
+
+          var alice = new Value("User", "alice");
+
+          var issue = new Value("Issue", "123");
+
+          string query = await oso.ActionsLocal(alice, issue);
+
+
+          // Execute with Entity Framework
+
+          var actions = await context.Database.SqlQueryRaw<string>(query).ToListAsync();
+
+
+          Console.WriteLine($"Available actions: {string.Join(", ", actions)}");
+
+          '
+  /authorize_query:
+    post:
+      tags:
+      - Local Check API
+      description: Fetches a query that can be run against your database to determine whether an actor can perform an action on a resource.
+      operationId: post_authorize_query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocalAuthQuery'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalAuthResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Generate authorization check SQL\nconst alice = { type: \"User\", id: \"alice\" };\nconst issue = { type: \"Issue\", id: \"123\" };\nconst query = await oso.authorizeLocal(alice, \"read\", issue);\n\n// Execute with database (example with raw SQL)\nconst result = await sql.raw(query).execute(db);\nconst { allowed } = result.rows[0];\n\nif (!allowed) {\n  throw new Error(\"Access denied\");\n}\n"
+      - lang: python
+        label: Python
+        source: "from oso_cloud import Oso, Value\nimport os\nfrom sqlalchemy import text\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Generate authorization check SQL\nalice = Value(\"User\", \"alice\")\nissue = Value(\"Issue\", \"123\")\nquery = oso.authorize_local(alice, \"read\", issue)\n\n# Execute with SQLAlchemy\nauthorized = session.execute(text(query)).scalar()\n\nif not authorized:\n    raise Exception(\"Access denied\")\n"
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n    // Generate authorization check SQL\n    alice := oso.NewValue(\"User\", \"alice\")\n    issue := oso.NewValue(\"Issue\", \"123\")\nquery, err := osoClient.AuthorizeLocal(alice, \"read\", issue)\nif err != nil {\n    log.Fatal(err)\n}\n\n// Execute with GORM\nvar authorizeResult AuthorizeResult\ndb.Raw(query).Scan(&authorizeResult)\n\nif !authorizeResult.Allowed {\n    return fmt.Errorf(\"access denied\")\n}\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Generate authorization check SQL\n            Value alice = new Value(\"User\", \"alice\");\n            Value issue = new Value(\"Issue\", \"123\");\n            String query = oso.authorizeLocal(alice, \"read\", issue);\n            \n            // Execute with database (example with JPA/Hibernate)\n            Boolean authorized = (Boolean) entityManager.createNativeQuery(query)\n                .getSingleResult();\n            \n            if (!authorized) {\n                throw new SecurityException(\"Access denied\");\n            }\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: 'require ''oso-cloud''
+
+
+          api_key = ENV.fetch(''OSO_CLOUD_API_KEY'', nil)
+
+          oso = OsoCloud::Oso.new(url: "https://cloud.osohq.com", api_key: api_key)
+
+
+          # Generate authorization check SQL
+
+          alice = OsoCloud::Value.new(type: "User", id: "alice")
+
+          issue = OsoCloud::Value.new(type: "Issue", id: "123")
+
+          query = oso.authorize_local(alice, "read", issue)
+
+
+          # Execute with ActiveRecord
+
+          authorized = ActiveRecord::Base.connection.execute(query).values.first.first
+
+
+          raise "Access denied" unless authorized
+
+          '
+      - lang: csharp
+        label: C#
+        source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate authorization check SQL\nvar alice = new Value(\"User\", \"alice\");\nvar issue = new Value(\"Issue\", \"123\");\nstring query = await oso.AuthorizeLocal(alice, \"read\", issue);\n\n// Execute with Entity Framework\nbool authorized = await context.Database.SqlQueryRaw<bool>(query).FirstAsync();\n\nif (!authorized) {\n    throw new UnauthorizedAccessException(\"Access denied\");\n}\n"
+  /list_query:
+    post:
+      tags:
+      - Local Check API
+      description: Fetches a filter that can be applied to a database query to return just the resources on which an actor can perform an action.
+      operationId: post_list_query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocalListQuery'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalListResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Generate SQL condition for authorized resources\nconst alice = { type: \"User\", id: \"alice\" };\nconst sqlCondition = await oso.listLocal(alice, \"read\", \"Issue\", \"id\");\n\n// Use with database query (example with Kysely)\nconst authorized_issues = await db\n  .selectFrom(\"issues\")\n  .where(sql.raw<boolean>(sqlCondition))\n  .selectAll()\n  .execute();\n\nconsole.log(\"Authorized issues:\", authorized_issues.length);\n"
+      - lang: python
+        label: Python
+        source: "from oso_cloud import Oso, Value\nimport os\nfrom sqlalchemy import select, text\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Generate SQL condition for authorized resources\nalice = Value(\"User\", \"alice\")\nsql_condition = oso.list_local(alice, \"read\", \"Issue\", \"id\")\n\n# Use with SQLAlchemy\nauthorized_issues = session.scalars(\n    select(Issues).filter(text(sql_condition))\n).all()\n\nprint(f\"Found {len(authorized_issues)} authorized issues\")\n"
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Generate SQL condition for authorized resources\nuser := oso.NewValue(\"User\", \"alice\")\nsqlCondition, err := osoClient.ListLocal(user, \"read\", \"Issue\", \"id\")\nif err != nil {\n    log.Fatal(err)\n}\n\n// Use with GORM\nvar issues []Issue\ndb.Find(&issues, sqlCondition)\n\nfmt.Printf(\"Found %d authorized issues\\n\", len(issues))\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport java.util.List;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Generate SQL condition for authorized resources\n            Value alice = new Value(\"User\", \"alice\");\n            String sqlCondition = oso.listLocal(alice, \"read\", \"Issue\", \"id\");\n            \n            // Use with JPA/Hibernate\n            List<Issue> authorizedIssues = entityManager.createQuery(\n                \"SELECT i FROM Issue i WHERE \" + sqlCondition, Issue.class)\n                .getResultList();\n            \n            System.out.println(\"Found \" + authorizedIssues.size() + \" authorized issues\");\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: 'require ''oso-cloud''
+
+
+          api_key = ENV.fetch(''OSO_CLOUD_API_KEY'', nil)
+
+          oso = OsoCloud::Oso.new(url: "https://cloud.osohq.com", api_key: api_key)
+
+
+          # Generate SQL condition for authorized resources
+
+          alice = OsoCloud::Value.new(type: "User", id: "alice")
+
+          sql_condition = oso.list_local(alice, "read", "Issue", "id")
+
+
+          # Use with ActiveRecord
+
+          authorized_issues = Issue.where(sql_condition)
+
+
+          puts "Found #{authorized_issues.count} authorized issues"
+
+          '
+      - lang: csharp
+        label: C#
+        source: "using OsoCloud;\nusing Microsoft.EntityFrameworkCore;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate SQL condition for authorized resources\nvar alice = new Value(\"User\", \"alice\");\nstring sqlCondition = await oso.ListLocal(alice, \"read\", \"Issue\", \"id\");\n\n// Use with Entity Framework\nvar authorizedIssues = await context.Issues\n    .FromSqlRaw($\"SELECT * FROM Issues WHERE {sqlCondition}\")\n    .ToListAsync();\n\nConsole.WriteLine($\"Found {authorizedIssues.Count} authorized issues\");\n"
+  /evaluate_query_local:
+    post:
+      tags:
+      - Local Check API
+      description: Fetches a SQL query that can be run against your database to answer arbitrary questions about authorization.
+      operationId: post_evaluate_query_local
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocalQuery'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalQueryResult'
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - ApiKey: []
+      x-codeSamples:
+      - lang: javascript
+        label: Node.js
+        source: "import { Oso } from 'oso-cloud';\n\nconst apiKey = process.env.OSO_CLOUD_API_KEY;\nconst oso = new Oso(\"https://cloud.osohq.com\", apiKey);\n\n// Generate SQL for field-level authorization\nconst actor = { type: \"User\", id: \"alice\" };\nconst resource = { type: \"Issue\", id: \"123\" };\nconst field = \"description\";\n\nconst sqlQuery = await oso.buildQuery([\n  \"allow_field\", \n  actor, \n  \"read\", \n  resource, \n  field\n]).evaluateLocalSelect({ field_name: field });\n\n// Execute field authorization query\nconst fieldResult = await sql.raw(sqlQuery).execute(db);\n"
+      - lang: python
+        label: Python
+        source: "from oso_cloud import Oso, Value\nimport os\nfrom sqlalchemy import text\nfrom oso_cloud import Oso, Value\n\noso = Oso(api_key=os.environ.get('OSO_CLOUD_API_KEY', None))\n\n# Generate SQL for field-level authorization\nactor = Value(\"User\", \"alice\")\nresource = Value(\"Issue\", \"123\")\nfield = \"description\"\n\nsql_query = oso.build_query((\n  \"allow_field\", \n  actor, \n  \"read\", \n  resource, \n  field\n)).evaluate_local_select({\"field_name\": field})\n\n# Execute field authorization query\nfield_result = session.execute(text(sql_query)).fetchall()\n"
+      - lang: go
+        label: Go
+        source: "package main\n\nimport (\n    \"log\"\n    \"os\"\n    oso \"github.com/osohq/go-oso-cloud/v2\"\n)\n\nfunc main() {\n    apiKey := os.Getenv(\"OSO_CLOUD_API_KEY\")\n    osoClient := oso.NewClient(\"https://cloud.osohq.com\", apiKey)\n\n// Generate SQL for field-level authorization\nactor := oso.NewValue(\"User\", \"alice\")\nresource := oso.NewValue(\"Issue\", \"123\")\nfieldVar := oso.NewVariable(\"field\")\n\nsqlQuery, err := osoClient.BuildQuery(\n  oso.NewQueryFact(\"allow_field\", actor, oso.String(\"read\"), resource, fieldVar),\n).EvaluateLocalSelect(map[string]oso.Variable{\"field_name\": fieldVar})\nif err != nil {\n    log.Fatal(err)\n}\n\n// Execute field authorization query\nvar fieldResult []map[string]interface{}\ndb.Raw(sqlQuery).Scan(&fieldResult)\n}\n"
+      - lang: java
+        label: Java
+        source: "package com.mycompany;\n\nimport java.io.IOException;\nimport java.util.List;\nimport java.util.Map;\nimport com.osohq.oso_cloud.Oso;\nimport com.osohq.oso_cloud.api.ApiException;\nimport com.osohq.oso_cloud.api.Value;\n\npublic class App {\n    public static void main(String[] args) {\n        String apiKey = System.getenv(\"OSO_CLOUD_API_KEY\");\n        Oso oso = new Oso(apiKey);\n        \n        try {\n            // Generate SQL for field-level authorization\n            Value actor = new Value(\"User\", \"alice\");\n            Value resource = new Value(\"Issue\", \"123\");\n            String field = \"description\";\n            \n            String sqlQuery = oso.buildQuery(\"allow_field\", actor, \"read\", resource, field)\n                .evaluateLocalSelect(Map.of(\"field_name\", field));\n            \n            // Execute field authorization query\n            List<Map<String, Object>> fieldResult = entityManager.createNativeQuery(sqlQuery)\n                .getResultList();\n        } catch (IOException | ApiException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        }\n    }\n}\n"
+      - lang: ruby
+        label: Ruby
+        source: "require 'oso-cloud'\n\napi_key = ENV.fetch('OSO_CLOUD_API_KEY', nil)\noso = OsoCloud::Oso.new(url: \"https://cloud.osohq.com\", api_key: api_key)\n\n# Generate SQL for field-level authorization\nactor = OsoCloud::Value.new(type: \"User\", id: \"alice\")\nresource = OsoCloud::Value.new(type: \"Issue\", id: \"123\")\nfield = \"description\"\n\nsql_query = oso.build_query([\"allow_field\", actor, \"read\", resource, field])\n  .evaluate_local_select({\"field_name\" => field})\n\n# Execute field authorization query\nfield_result = ActiveRecord::Base.connection.execute(sql_query)\n"
+      - lang: csharp
+        label: C#
+        source: "using OsoCloud;\nusing System.Collections.Generic;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate SQL for field-level authorization\nvar actor = new Value(\"User\", \"alice\");\nvar resource = new Value(\"Issue\", \"123\");\nstring field = \"description\";\n\nstring sqlQuery = await oso.BuildQuery(\"allow_field\", actor, \"read\", resource, field)\n    .EvaluateLocalSelect(new Dictionary<string, string> { { \"field_name\", field } });\n\n// Execute field authorization query\nvar fieldResult = await context.Database.SqlQueryRaw<object>(sqlQuery).ToListAsync();\n"
+components:
+  schemas:
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    ActionsQuery:
+      type: object
+      required:
+      - actor_id
+      - actor_type
+      - resource_id
+      - resource_type
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    LocalQuery:
+      type: object
+      required:
+      - data_bindings
+      - mode
+      - query
+      properties:
+        query:
+          $ref: '#/components/schemas/Query'
+        data_bindings:
+          type: string
+        mode:
+          $ref: '#/components/schemas/LocalQueryMode'
+    LocalListQuery:
+      type: object
+      required:
+      - column
+      - data_bindings
+      - query
+      properties:
+        query:
+          $ref: '#/components/schemas/ListQuery'
+        column:
+          type: string
+        data_bindings:
+          type: string
+    Constraint:
+      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          description: The type of the variable.
+          type: string
+        ids:
+          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
+          type: array
+          items:
+            type: string
+          nullable: true
+    LocalActionsQuery:
+      type: object
+      required:
+      - data_bindings
+      - query
+      properties:
+        query:
+          $ref: '#/components/schemas/ActionsQuery'
+        data_bindings:
+          type: string
+    LocalListResult:
+      type: object
+      required:
+      - sql
+      properties:
+        sql:
+          type: string
+    Query:
+      description: A generic query comprising 1+ predicates conjuncted together.
+      type: object
+      required:
+      - calls
+      - constraints
+      - context_facts
+      - predicate
+      properties:
+        predicate:
+          description: 'Predicate name and variable names.
+
+
+            INVARIANT: all variable names must exist in `constraints`. This ensures that all variables at least have a type.'
+          type: array
+          items:
+          - type: string
+          - type: array
+            items:
+              type: string
+          maxItems: 2
+          minItems: 2
+        calls:
+          description: 'Predicate name and variable names.
+
+
+            INVARIANT: all variable names must exist in `constraints`. This ensures that all variables at least have a type.'
+          type: array
+          items:
+            type: array
+            items:
+            - type: string
+            - type: array
+              items:
+                type: string
+            maxItems: 2
+            minItems: 2
+        constraints:
+          description: Map of variable names to their type and value(s). Every variable is at least typed and may also be constrained to a set of values.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Constraint'
+        context_facts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConcreteFact'
+    LocalAuthQuery:
+      type: object
+      required:
+      - data_bindings
+      - query
+      properties:
+        query:
+          $ref: '#/components/schemas/AuthorizeQuery'
+        data_bindings:
+          type: string
+    Value:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        id:
+          type: string
+          nullable: true
+    Fact:
+      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+    LocalQueryResult:
+      type: object
+      required:
+      - sql
+      properties:
+        sql:
+          type: string
+    TypedId:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+    LocalAuthResult:
+      type: object
+      required:
+      - sql
+      properties:
+        sql:
+          type: string
+    LocalQueryMode:
+      oneOf:
+      - type: object
+        required:
+        - mode
+        - query_vars_to_output_column_names
+        properties:
+          mode:
+            type: string
+            enum:
+            - select
+          query_vars_to_output_column_names:
+            type: object
+            additionalProperties:
+              type: string
+      - type: object
+        required:
+        - mode
+        - output_column_name
+        - query_var
+        properties:
+          mode:
+            type: string
+            enum:
+            - filter
+          query_var:
+            type: string
+          output_column_name:
+            type: string
+    ListQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resource_type
+      - page_size
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resource_type:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+        page_size:
+          description: Required. Page size for pagination. Must be at least 10,000. Results will be paginated and a `next_page_token` will be included in the response if more results are available. Ignored when `page_token` is provided, since the page size is determined by the original request.
+          default: 10000
+          type: integer
+          format: uint
+          minimum: 10000
+        page_token:
+          description: Page token for fetching subsequent pages of results. Use the `next_page_token` from a previous response. When provided, `page_size` is ignored.
+          default: null
+          type: string
+          nullable: true
+    LocalActionsResult:
+      type: object
+      required:
+      - sql
+      properties:
+        sql:
+          type: string
+    AuthorizeQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resource_id
+      - resource_type
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    ConcreteFact:
+      description: 'A specific piece of authorization-relevant data, ie: a fact.
+
+
+        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/TypedId'
+  securitySchemes:
+    ApiKey:
+      description: Requires an API key to access.
+      type: http
+      scheme: bearer
+      bearerFormat: Bearer e_0123_123_token0123
