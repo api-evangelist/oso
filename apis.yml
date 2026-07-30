@@ -6,7 +6,20 @@ description: >-
   enables developers to model RBAC, ReBAC, and ABAC authorization patterns,
   manage authorization facts, and query permissions at runtime with sub-10ms
   latency and 99.99% availability.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/oso.png
 url: https://raw.githubusercontent.com/api-evangelist/oso/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -23,38 +36,64 @@ tags:
   - Security
   - Identity
 apis:
-  - name: Oso Cloud Authorization API
-    description: >-
-      The Oso Cloud Authorization API provides REST endpoints for checking
-      permissions, managing authorization facts, querying policies, and
-      enforcing access control across applications and services. Core operations
-      include authorize (boolean permission check), list (get authorized
-      resources), actions (get allowed actions), query, and batch fact
-      management. The API uses the Polar policy language for defining
-      authorization logic and supports context facts for request-time data.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.osohq.com/api
-    humanURL: https://www.osohq.com/docs
-    properties:
-      - type: Documentation
-        url: https://www.osohq.com/docs
-      - type: OpenAPI
-        url: https://www.osohq.com/docs/reference/api
-      - type: OpenAPI
-        url: openapi/oso-authorization-openapi.yml
-      - type: Authentication
-        url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
-    contact:
-      - FN: Oso Cloud Support
-        url: https://www.osohq.com/company/contact
-    tags:
-      - Authorization
-      - Permissions
-      - Access Control
-      - Policy Management
-      - Facts
-      - RBAC
-      - ReBAC
+- aid: oso:oso-centralized-authorization-data-api
+  name: Oso Cloud Centralized Authorization Data API
+  description: >-
+    The Centralized Authorization Data API from Oso Cloud — 6 operation(s) for centralized authorization
+    data.
+  humanURL: https://www.osohq.com/docs
+  baseURL: https://api.osohq.com/api
+  tags:
+  - Centralized Authorization Data
+  properties:
+  - type: OpenAPI
+    url: openapi/oso-centralized-authorization-data-api-openapi.yml
+  - type: Documentation
+    url: https://www.osohq.com/docs
+  - type: Authentication
+    url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
+- aid: oso:oso-check-api-api
+  name: Oso Cloud Check API API
+  description: The Check API API from Oso Cloud — 6 operation(s) for check api.
+  humanURL: https://www.osohq.com/docs
+  baseURL: https://api.osohq.com/api
+  tags:
+  - Check API
+  properties:
+  - type: OpenAPI
+    url: openapi/oso-check-api-api-openapi.yml
+  - type: Documentation
+    url: https://www.osohq.com/docs
+  - type: Authentication
+    url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
+- aid: oso:oso-local-check-api-api
+  name: Oso Cloud Local Check API API
+  description: The Local Check API API from Oso Cloud — 4 operation(s) for local check api.
+  humanURL: https://www.osohq.com/docs
+  baseURL: https://api.osohq.com/api
+  tags:
+  - Local Check API
+  properties:
+  - type: OpenAPI
+    url: openapi/oso-local-check-api-api-openapi.yml
+  - type: Documentation
+    url: https://www.osohq.com/docs
+  - type: Authentication
+    url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
+- aid: oso:oso-policy-api
+  name: Oso Cloud Policy API
+  description: The Policy API from Oso Cloud — 2 operation(s) for policy.
+  humanURL: https://www.osohq.com/docs
+  baseURL: https://api.osohq.com/api
+  tags:
+  - Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/oso-policy-api-openapi.yml
+  - type: Documentation
+    url: https://www.osohq.com/docs
+  - type: Authentication
+    url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
 common:
   - type: AgenticAccess
     url: agentic-access/oso-agentic-access.yml
