@@ -1,0 +1,20 @@
+{
+  "provider": "oso",
+  "sources": [
+    "oso-centralized-authorization-data-api-openapi.yml",
+    "oso-check-api-api-openapi.yml",
+    "oso-local-check-api-api-openapi.yml",
+    "oso-policy-api-openapi.yml"
+  ],
+  "outputs": [
+    "oso-centralized-authorization-data-api-openapi.yml",
+    "oso-check-api-api-openapi.yml",
+    "oso-local-check-api-api-openapi.yml",
+    "oso-policy-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
