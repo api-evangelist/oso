@@ -1,0 +1,98 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oso Cloud HTTP Centralized Authorization Data Policy API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "get_policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.osohq.com/api/policy",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets the currently active policy in Oso Cloud. The policy is expressed as a string containing [Polar](https://www.osohq.com/docs/modeling-in-polar/reference) code."
+        },
+        {
+          "info": {
+            "name": "post_policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/policy",
+            "params": [
+              {
+                "name": "force",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "show_suggestions",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fail_fast",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the policy in Oso Cloud. The policy should be represented as a string containing [Polar](https://www.osohq.com/docs/modeling-in-polar/reference) code."
+        },
+        {
+          "info": {
+            "name": "get_policy_metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.osohq.com/api/policy_metadata",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns metadata about the currently active policy."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

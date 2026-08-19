@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oso Cloud HTTP Centralized Authorization Data API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Centralized Authorization Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "post_facts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/facts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Adds a new fact.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"inserts\": [<fact>]}]`."
+        },
+        {
+          "info": {
+            "name": "delete_facts",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.osohq.com/api/facts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a fact. Does not throw an error when the fact is not found.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"deletes\": [<fact>]}]`."
+        },
+        {
+          "info": {
+            "name": "post_bulk_load",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/bulk_load",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Adds many facts at once.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"inserts\": <bulk_data>}]`."
+        },
+        {
+          "info": {
+            "name": "post_bulk_delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/bulk_delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete many facts in a single transaction.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"deletes\": <bulk_data>}]`."
+        },
+        {
+          "info": {
+            "name": "post_bulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes and adds many facts in one atomic transaction. The deletions are performed before the adds. `null` can be used as a wildcard in facts in delete. Does not throw an error when the facts to delete are not found.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"deletes\": <bulk.delete>}, {\"inserts\": <bulk.tell>}]`."
+        },
+        {
+          "info": {
+            "name": "post_batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes and adds many facts in one atomic batch. Facts are inserted and deleted in-order (ie: `insert`ed facts may be `delete`d in the same transaction). `null` can be used as a wildcard in deleted facts. Does not throw an error when the facts to delete are not found."
+        },
+        {
+          "info": {
+            "name": "clear_data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/clear_data",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

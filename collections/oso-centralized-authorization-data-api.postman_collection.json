@@ -1,0 +1,1092 @@
+{
+  "item": [
+    {
+      "id": "df604343-d5ce-4501-99fd-fdd5f1b68e18",
+      "name": "Centralized Authorization Data",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dda20209-adde-404b-bf4d-ebf5ab2e8090",
+          "name": "post facts",
+          "request": {
+            "name": "post facts",
+            "description": {
+              "content": "Adds a new fact.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"inserts\": [<fact>]}]`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "facts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"args\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"predicate\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "eaf8b231-498e-4141-8b68-5fdb24bc90dc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "facts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"args\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"predicate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"args\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"predicate\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c1c0419-c40d-4ec5-a5e8-68a64e7f31f6",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "facts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"args\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"predicate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b40d41fb-e839-4cd9-b076-ef8bb738080e",
+          "name": "delete facts",
+          "request": {
+            "name": "delete facts",
+            "description": {
+              "content": "Deletes a fact. Does not throw an error when the fact is not found.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"deletes\": [<fact>]}]`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "facts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"args\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"predicate\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "60abe616-e39e-416d-b7d6-ee13022fe3a7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "facts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"args\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"predicate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba851f8f-9236-427a-a426-d999e5c7919b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "facts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"args\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"predicate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c3685edc-6a13-4947-b39d-dd5ad36f49a5",
+          "name": "post bulk load",
+          "request": {
+            "name": "post bulk load",
+            "description": {
+              "content": "Adds many facts at once.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"inserts\": <bulk_data>}]`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk_load"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  },\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9cab07e-86e0-4bfb-bfad-f2c60e0b7b23",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk_load"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  },\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f311b2e7-c3b1-4125-9151-03e912bcecd3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk_load"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  },\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a451ba62-6ba3-466e-9073-9cbf17e91eae",
+          "name": "post bulk delete",
+          "request": {
+            "name": "post bulk delete",
+            "description": {
+              "content": "Delete many facts in a single transaction.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"deletes\": <bulk_data>}]`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk_delete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  },\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5a2676c5-c9e3-49a1-9280-9c55f07bac22",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk_delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  },\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cccec833-8262-4697-8d86-cbf08ab2cf3b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk_delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  },\n  {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6392a2da-55ca-47b1-91a6-600200fc2b24",
+          "name": "post bulk",
+          "request": {
+            "name": "post bulk",
+            "description": {
+              "content": "Deletes and adds many facts in one atomic transaction. The deletions are performed before the adds. `null` can be used as a wildcard in facts in delete. Does not throw an error when the facts to delete are not found.\n\nDEPRECATED: Prefer `POST /batch` with payload `[{\"deletes\": <bulk.delete>}, {\"inserts\": <bulk.tell>}]`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"delete\": [\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ],\n  \"tell\": [\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9ff11062-6d30-4917-a43f-b01e0cea4ede",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delete\": [\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ],\n  \"tell\": [\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "899ea0ab-3b55-49e5-9e2d-a66469fa6bbc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delete\": [\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ],\n  \"tell\": [\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f7a14f3b-3a6f-401a-84bc-14d632cac8c7",
+          "name": "post batch",
+          "request": {
+            "name": "post batch",
+            "description": {
+              "content": "Deletes and adds many facts in one atomic batch. Facts are inserted and deleted in-order (ie: `insert`ed facts may be `delete`d in the same transaction). `null` can be used as a wildcard in deleted facts. Does not throw an error when the facts to delete are not found.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"inserts\": [\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      },\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"inserts\": [\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      },\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      }\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5b06a634-61e4-4439-a765-cb3bbc05ab9b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"inserts\": [\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      },\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"inserts\": [\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      },\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      }\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b79da7c-2a00-4efe-96e6-b6413667a0fa",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"inserts\": [\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      },\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"inserts\": [\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      },\n      {\n        \"args\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"predicate\": \"<string>\"\n      }\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "78b0f0d2-b61e-4fac-bc63-baf0443668e0",
+          "name": "clear data",
+          "request": {
+            "name": "clear data",
+            "description": {},
+            "url": {
+              "path": [
+                "clear_data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2025bbc2-48c8-4368-aa5b-e6c8bd3ce772",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "clear_data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58a74e2e-3e4d-4f9b-aa5b-38214ef2341e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "clear_data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.osohq.com/api/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0f059e5b-2207-45a8-b465-8aeb1cd16b83",
+    "name": "Oso Cloud HTTP Centralized Authorization Data API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/",
+      "type": "text/plain"
+    }
+  }
+}

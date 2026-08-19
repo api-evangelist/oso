@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oso Cloud HTTP Centralized Authorization Data Check API API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Check API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "post_authorize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/authorize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Determines whether or not an actor can take an action on a resource, based on a combination of authorization data and policy logic."
+        },
+        {
+          "info": {
+            "name": "post_authorize_resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/authorize_resources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a subset of resources on which an actor can perform a particular action. Ordering and duplicates, if any exist, are preserved."
+        },
+        {
+          "info": {
+            "name": "post_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches a list of resource IDs on which an actor can perform a particular action. Supports pagination: provide `page_size` to receive results in pages, with a `next_page_token` in the response for fetching subsequent pages."
+        },
+        {
+          "info": {
+            "name": "post_actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/actions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches a list of actions which an actor can perform on a particular resource."
+        },
+        {
+          "info": {
+            "name": "post_query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/query",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Query v1: query for any predicate and any combination of concrete and wildcard arguments.\n\nUnlike `GET /facts`, which only lists facts you've added to Oso Cloud, you can use `POST /query` to list derived information about any rule in your policy."
+        },
+        {
+          "info": {
+            "name": "post_evaluate_query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/evaluate_query",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Query v2: query for any expression.\n\nUnlike `GET /facts`, which only lists facts you've added to Oso Cloud, you can use `POST /evaluate_query` to list derived information about any rule in your policy."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

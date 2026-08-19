@@ -1,0 +1,968 @@
+{
+  "item": [
+    {
+      "id": "1e0c8d25-780a-4b47-9c73-896c803eaecf",
+      "name": "Check API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "46fbbaca-b275-4465-a8c8-da2a7adede76",
+          "name": "post authorize",
+          "request": {
+            "name": "post authorize",
+            "description": {
+              "content": "Determines whether or not an actor can take an action on a resource, based on a combination of authorization data and policy logic.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "authorize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_id\": \"<string>\",\n  \"resource_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b92a1f03-0802-4cd9-a336-c0ff006a74b8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "authorize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_id\": \"<string>\",\n  \"resource_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"allowed\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9f40fe5-3db7-427a-8c17-a9d12654bb8b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "authorize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_id\": \"<string>\",\n  \"resource_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "749917eb-e7e4-4bb7-ac61-faaec0eb2570",
+          "name": "post authorize resources",
+          "request": {
+            "name": "post authorize resources",
+            "description": {
+              "content": "Returns a subset of resources on which an actor can perform a particular action. Ordering and duplicates, if any exist, are preserved.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "authorize_resources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resources\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e514ec56-ee0a-4f4a-97aa-4396375350f9",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "authorize_resources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resources\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a1f7a793-4384-45ef-9922-801eca8c97c4",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "authorize_resources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resources\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7cf88946-645a-4d3a-aeff-c4c71c8094f8",
+          "name": "post list",
+          "request": {
+            "name": "post list",
+            "description": {
+              "content": "Fetches a list of resource IDs on which an actor can perform a particular action. Supports pagination: provide `page_size` to receive results in pages, with a `next_page_token` in the response for fetching subsequent pages.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_type\": \"<string>\",\n  \"page_size\": 10000,\n  \"page_token\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fbd3fba8-b25d-4568-a518-20c55d399aee",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_type\": \"<string>\",\n  \"page_size\": 10000,\n  \"page_token\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    \"string\",\n    \"string\"\n  ],\n  \"next_page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b7bd891-b51e-41f5-80e9-8e569a09521c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_type\": \"<string>\",\n  \"page_size\": 10000,\n  \"page_token\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2960c6f8-c8bb-440a-b20f-995fa1cf102d",
+          "name": "post actions",
+          "request": {
+            "name": "post actions",
+            "description": {
+              "content": "Fetches a list of actions which an actor can perform on a particular resource.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "actions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_id\": \"<string>\",\n  \"resource_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "90c8bc9c-0a00-44a8-b493-5f657a337b30",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_id\": \"<string>\",\n  \"resource_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8a68f41-903c-4ca9-82fe-5fd1ddc8eafb",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"actor_id\": \"<string>\",\n  \"actor_type\": \"<string>\",\n  \"resource_id\": \"<string>\",\n  \"resource_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48f626cc-7f2d-4fcb-8276-5e5e2044d186",
+          "name": "post query",
+          "request": {
+            "name": "post query",
+            "description": {
+              "content": "Query v1: query for any predicate and any combination of concrete and wildcard arguments.\n\nUnlike `GET /facts`, which only lists facts you've added to Oso Cloud, you can use `POST /query` to list derived information about any rule in your policy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fact\": {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b64e6512-a3b6-4fac-9dff-272a573a3d50",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fact\": {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab0db5eb-151b-42c7-835d-cbf72168063a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fact\": {\n    \"args\": [\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"predicate\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d0dd90a9-1baf-4636-b012-0048f4933cac",
+          "name": "post evaluate query",
+          "request": {
+            "name": "post evaluate query",
+            "description": {
+              "content": "Query v2: query for any expression.\n\nUnlike `GET /facts`, which only lists facts you've added to Oso Cloud, you can use `POST /evaluate_query` to list derived information about any rule in your policy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "evaluate_query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"calls\": [\n    [],\n    []\n  ],\n  \"constraints\": {\n    \"key_0\": {\n      \"type\": \"<string>\",\n      \"ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"context_facts\": [\n    {\n      \"args\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ],\n  \"predicate\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c16952f2-378b-4ed6-8f68-8038ade887b3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "evaluate_query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"calls\": [\n    [],\n    []\n  ],\n  \"constraints\": {\n    \"key_0\": {\n      \"type\": \"<string>\",\n      \"ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"key_1\": {\n      \"type\": \"<string>\",\n      \"ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"context_facts\": [\n    {\n      \"args\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ],\n  \"predicate\": []\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c13ff1d-9e59-4276-8751-9372a93c8c1a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "evaluate_query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"calls\": [\n    [],\n    []\n  ],\n  \"constraints\": {\n    \"key_0\": {\n      \"type\": \"<string>\",\n      \"ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"key_1\": {\n      \"type\": \"<string>\",\n      \"ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"context_facts\": [\n    {\n      \"args\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    },\n    {\n      \"args\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ],\n      \"predicate\": \"<string>\"\n    }\n  ],\n  \"predicate\": []\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.osohq.com/api/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e48ec2c4-0b09-4d51-9372-574dca603570",
+    "name": "Oso Cloud HTTP Centralized Authorization Data Check API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/",
+      "type": "text/plain"
+    }
+  }
+}

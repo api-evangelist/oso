@@ -1,0 +1,93 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oso Cloud HTTP Centralized Authorization Data Local Check API API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Local Check API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "post_actions_query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/actions_query",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "post_authorize_query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/authorize_query",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches a query that can be run against your database to determine whether an actor can perform an action on a resource."
+        },
+        {
+          "info": {
+            "name": "post_list_query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/list_query",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches a filter that can be applied to a database query to return just the resources on which an actor can perform an action."
+        },
+        {
+          "info": {
+            "name": "post_evaluate_query_local",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.osohq.com/api/evaluate_query_local",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches a SQL query that can be run against your database to answer arbitrary questions about authorization."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
