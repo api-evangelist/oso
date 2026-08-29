@@ -6,6 +6,18 @@ description: >-
   enables developers to model RBAC, ReBAC, and ABAC authorization patterns,
   manage authorization facts, and query permissions at runtime with sub-10ms
   latency and 99.99% availability.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
