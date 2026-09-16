@@ -1,10 +1,8 @@
 aid: oso
 name: Oso Cloud
-description: >-
-  Oso Cloud is an authorization-as-a-service platform that provides a REST API
-  for defining and enforcing relationship-based access control policies. It
-  enables developers to model RBAC, ReBAC, and ABAC authorization patterns,
-  manage authorization facts, and query permissions at runtime with sub-10ms
+description: Oso Cloud is an authorization-as-a-service platform that provides a REST API for defining
+  and enforcing relationship-based access control policies. It enables developers to model RBAC, ReBAC,
+  and ABAC authorization patterns, manage authorization facts, and query permissions at runtime with sub-10ms
   latency and 99.99% availability.
 deliveryModel:
   model: saas
@@ -35,25 +33,24 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/oso.png
 url: https://raw.githubusercontent.com/api-evangelist/oso/refs/heads/main/apis.yml
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 type: Index
 tags:
-  - Authorization
-  - Access Control
-  - RBAC
-  - ReBAC
-  - ABAC
-  - Permissions
-  - Policy
-  - Security
-  - Identity
+- Authorization
+- Access Control
+- RBAC
+- ReBAC
+- ABAC
+- Permissions
+- Policy
+- Security
+- Identity
 apis:
 - aid: oso:oso-centralized-authorization-data-api
   name: Oso Cloud Centralized Authorization Data API
-  description: >-
-    The Centralized Authorization Data API from Oso Cloud — 6 operation(s) for centralized authorization
-    data.
+  description: The Centralized Authorization Data API from Oso Cloud — 6 operation(s) for centralized
+    authorization data.
   humanURL: https://www.osohq.com/docs
   baseURL: https://api.osohq.com/api
   tags:
@@ -66,7 +63,7 @@ apis:
   - type: Authentication
     url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
 - aid: oso:oso-check-api-api
-  name: Oso Cloud Check API API
+  name: Oso Cloud Check API
   description: The Check API API from Oso Cloud — 6 operation(s) for check api.
   humanURL: https://www.osohq.com/docs
   baseURL: https://api.osohq.com/api
@@ -80,7 +77,7 @@ apis:
   - type: Authentication
     url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
 - aid: oso:oso-local-check-api-api
-  name: Oso Cloud Local Check API API
+  name: Oso Cloud Local Check API
   description: The Local Check API API from Oso Cloud — 4 operation(s) for local check api.
   humanURL: https://www.osohq.com/docs
   baseURL: https://api.osohq.com/api
@@ -108,38 +105,38 @@ apis:
   - type: Authentication
     url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
 common:
-  - type: AgenticAccess
-    url: agentic-access/oso-agentic-access.yml
-  - type: TrustCenter
-    url: security/oso-trust-center.yml
-  - type: DomainSecurity
-    url: security/oso-domain-security.yml
-  - type: Authentication
-    url: authentication/oso-authentication.yml
-  - type: Website
-    url: https://www.osohq.com
-  - type: Documentation
-    url: https://www.osohq.com/docs
-  - type: GitHubOrg
-    url: https://github.com/osohq
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/osohq
-  - type: Blog
-    url: https://www.osohq.com/blog
-  - type: Pricing
-    url: https://www.osohq.com/pricing
-  - type: StatusPage
-    url: https://oso.statuspage.io/
-  - type: X
-    url: https://x.com/osohq
-  - type: ChangeLog
-    url: https://www.osohq.com/docs/changelog/whats-new
-  - type: Plans
-    url: plans/oso-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/oso-rate-limits.yml
-  - type: FinOps
-    url: finops/oso-finops.yml
+- type: AgenticAccess
+  url: agentic-access/oso-agentic-access.yml
+- type: TrustCenter
+  url: security/oso-trust-center.yml
+- type: DomainSecurity
+  url: security/oso-domain-security.yml
+- type: Authentication
+  url: authentication/oso-authentication.yml
+- type: Website
+  url: https://www.osohq.com
+- type: Documentation
+  url: https://www.osohq.com/docs
+- type: GitHubOrg
+  url: https://github.com/osohq
+- type: LinkedIn
+  url: https://www.linkedin.com/company/osohq
+- type: Blog
+  url: https://www.osohq.com/blog
+- type: Pricing
+  url: https://www.osohq.com/pricing
+- type: StatusPage
+  url: https://oso.statuspage.io/
+- type: X
+  url: https://x.com/osohq
+- type: ChangeLog
+  url: https://www.osohq.com/docs/changelog/whats-new
+- type: Plans
+  url: plans/oso-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/oso-rate-limits.yml
+- type: FinOps
+  url: finops/oso-finops.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
