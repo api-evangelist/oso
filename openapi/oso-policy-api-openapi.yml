@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Oso Cloud HTTP Centralized Authorization Data Policy API
+  title: Oso Cloud HTTP Policy API
   version: 0.1.0
-  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/'
+  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H "Authorization: Bearer $OSO_AUTH" https://cloud.osohq.com/api/'
 servers:
 - url: https://api.osohq.com/api/
 tags:
@@ -12,15 +12,16 @@ paths:
     get:
       tags:
       - Policy
-      description: Gets the currently active policy in Oso Cloud. The policy is expressed as a string containing [Polar](https://www.osohq.com/docs/modeling-in-polar/reference) code.
+      description: Gets the currently active policy in Oso Cloud. The policy is expressed as a string containing Polar code.
       operationId: get_policy
       parameters:
       - name: id
         in: query
         schema:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
       responses:
         '200':
           description: ''
@@ -36,10 +37,12 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
       - ApiKey: []
+      summary: Get policy
+      x-summary-source: derived
     post:
       tags:
       - Policy
-      description: Updates the policy in Oso Cloud. The policy should be represented as a string containing [Polar](https://www.osohq.com/docs/modeling-in-polar/reference) code.
+      description: Updates the policy in Oso Cloud. The policy should be represented as a string containing Polar code.
       operationId: post_policy
       parameters:
       - name: force
@@ -103,6 +106,8 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Update policy with Polar code\nvar policyCode = @\"\n    actor User {}\n    resource Repository {\n        permissions = [\"\"read\"\", \"\"write\"\"];\n        roles = [\"\"owner\"\", \"\"maintainer\"\"];\n    }\n    has_role(user: User, \"\"owner\"\", repo: Repository) if\n        user.id = repo.owner_id;\n\";\nawait oso.Policy(policyCode);\n"
+      summary: Post policy
+      x-summary-source: derived
   /policy_metadata:
     get:
       tags:
@@ -113,9 +118,10 @@ paths:
       - name: id
         in: query
         schema:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
       responses:
         '200':
           description: ''
@@ -222,8 +228,64 @@ paths:
           Console.WriteLine(string.Join(", ", metadata.Resources.Keys));
 
           '
+      summary: Get policy metadata
+      x-summary-source: derived
 components:
   schemas:
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    PolicyFailure:
+      description: All known failure modes for a submitted policy test. Encountering any of these scenarios means the policy test has failed.
+      oneOf:
+      - description: Polar file failed validation.
+        type: string
+        enum:
+        - ValidationFailed
+      - description: An assertion failed in an executed test.
+        type: string
+        enum:
+        - AssertionFailed
+      - description: Server hit an unexpected error.
+        type: string
+        enum:
+        - ServerError
+    PolicyError:
+      description: Error report for a failed Polar policy test, to be displayed to user. Sent to `oso-cloud` CLI as JSON.
+      type: object
+      required:
+      - error_type
+      - message
+      properties:
+        error_type:
+          description: Type of error encountered.
+          allOf:
+          - $ref: '#/components/schemas/PolicyFailure'
+        message:
+          description: Error message to display to the user.
+          type: string
+    GetPolicyMetadataResult:
+      type: object
+      required:
+      - metadata
+      properties:
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+    Policy:
+      type: object
+      required:
+      - src
+      properties:
+        filename:
+          type:
+          - string
+          - 'null'
+        src:
+          type: string
     PolicyMetadata:
       type: object
       required:
@@ -233,13 +295,33 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/ResourceBlockData'
-    ApiError:
+    TestSummary:
+      description: Results of executing a single test. Sent to `oso-cloud` CLI as JSON.
       type: object
       required:
-      - message
+      - name
+      - passed
+      - total
       properties:
-        message:
+        name:
+          description: Name of test.
           type: string
+        passed:
+          description: How many assertions passed?
+          type: integer
+          format: uint
+          minimum: 0
+        total:
+          description: How many assertions in total?
+          type: integer
+          format: uint
+          minimum: 0
+    GetPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/Policy'
     ApiResult:
       type: object
       required:
@@ -247,13 +329,46 @@ components:
       properties:
         message:
           type: string
-    GetPolicyResult:
+    PolicyTestResult:
+      description: Result of a Policy test API request. Sent to `oso-cloud` CLI as JSON.
       type: object
+      required:
+      - errors
+      - success
+      - tests
       properties:
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/Policy'
-          nullable: true
+        success:
+          description: Did the policy test succeed?
+          type: boolean
+        errors:
+          description: What errors did we encounter?
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyError'
+        tests:
+          description: What tests did we execute?
+          type: array
+          items:
+            $ref: '#/components/schemas/TestSummary'
+    ResourceBlockData:
+      type: object
+      required:
+      - permissions
+      - relations
+      - roles
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        relations:
+          type: object
+          additionalProperties:
+            type: string
     SavePolicyError:
       oneOf:
       - type: object
@@ -297,113 +412,6 @@ components:
             type: string
           test_results:
             $ref: '#/components/schemas/PolicyTestResult'
-    PolicyFailure:
-      description: All known failure modes for a submitted policy test. Encountering any of these scenarios means the policy test has failed.
-      oneOf:
-      - description: Polar file failed validation.
-        type: string
-        enum:
-        - ValidationFailed
-      - description: An assertion failed in an executed test.
-        type: string
-        enum:
-        - AssertionFailed
-      - description: Server hit an unexpected error.
-        type: string
-        enum:
-        - ServerError
-    ResourceBlockData:
-      type: object
-      required:
-      - permissions
-      - relations
-      - roles
-      properties:
-        roles:
-          type: array
-          items:
-            type: string
-        permissions:
-          type: array
-          items:
-            type: string
-        relations:
-          type: object
-          additionalProperties:
-            type: string
-    PolicyTestResult:
-      description: Result of a Policy test API request. Sent to `oso-cloud` CLI as JSON.
-      type: object
-      required:
-      - errors
-      - success
-      - tests
-      properties:
-        success:
-          description: Did the policy test succeed?
-          type: boolean
-        errors:
-          description: What errors did we encounter?
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyError'
-        tests:
-          description: What tests did we execute?
-          type: array
-          items:
-            $ref: '#/components/schemas/TestSummary'
-    PolicyError:
-      description: Error report for a failed Polar policy test, to be displayed to user. Sent to `oso-cloud` CLI as JSON.
-      type: object
-      required:
-      - error_type
-      - message
-      properties:
-        error_type:
-          description: Type of error encountered.
-          allOf:
-          - $ref: '#/components/schemas/PolicyFailure'
-        message:
-          description: Error message to display to the user.
-          type: string
-    Policy:
-      type: object
-      required:
-      - src
-      properties:
-        filename:
-          type: string
-          nullable: true
-        src:
-          type: string
-    GetPolicyMetadataResult:
-      type: object
-      required:
-      - metadata
-      properties:
-        metadata:
-          $ref: '#/components/schemas/PolicyMetadata'
-    TestSummary:
-      description: Results of executing a single test. Sent to `oso-cloud` CLI as JSON.
-      type: object
-      required:
-      - name
-      - passed
-      - total
-      properties:
-        name:
-          description: Name of test.
-          type: string
-        passed:
-          description: How many assertions passed?
-          type: integer
-          format: uint
-          minimum: 0
-        total:
-          description: How many assertions in total?
-          type: integer
-          format: uint
-          minimum: 0
   securitySchemes:
     ApiKey:
       description: Requires an API key to access.

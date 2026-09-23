@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Oso Cloud HTTP Centralized Authorization Data Check API API
+  title: Oso Cloud HTTP Check API
   version: 0.1.0
-  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/'
+  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H "Authorization: Bearer $OSO_AUTH" https://cloud.osohq.com/api/'
 servers:
 - url: https://api.osohq.com/api/
 tags:
@@ -54,6 +54,8 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Basic authorization check\nvar alice = new Value(\"User\", \"alice\");\nvar repository = new Value(\"Repository\", \"anvils\");\n\nbool authorized = await oso.Authorize(alice, \"read\", repository);\nif (!authorized) {\n    throw new UnauthorizedAccessException(\"Access denied\");\n}\n\n// With context facts for additional information\nvar issue = new Value(\"Issue\", \"123\");\nbool contextAuthorized = await oso.Authorize(alice, \"read\", issue, \n    contextFacts: new[] { new[] { \"has_relation\", issue, \"parent\", repository } });\n"
+      summary: Post authorize
+      x-summary-source: derived
   /authorize_resources:
     post:
       tags:
@@ -81,6 +83,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
       - ApiKey: []
+      summary: Post authorize resources
+      x-summary-source: derived
   /list:
     post:
       tags:
@@ -127,6 +131,8 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// List all repositories the user can read\nvar alice = new Value(\"User\", \"alice\");\nvar repositoryIds = await oso.List(alice, \"read\", \"Repository\");\nConsole.WriteLine($\"Readable repositories: {string.Join(\", \", repositoryIds)}\");\n\n// With context facts\nvar issueIds = await oso.List(alice, \"read\", \"Issue\", \n    contextFacts: new[] {\n        new[] { \"has_relation\", new Value(\"Issue\", \"123\"), \"parent\", new Value(\"Repository\", \"anvils\") },\n        new[] { \"has_relation\", new Value(\"Issue\", \"456\"), \"parent\", new Value(\"Repository\", \"acme\") }\n    });\n"
+      summary: Post list
+      x-summary-source: derived
   /actions:
     post:
       tags:
@@ -173,6 +179,8 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Get all actions user can perform on repository\nvar user = new Value(\"User\", \"alice\");\nvar repository = new Value(\"Repository\", \"anvils\");\nvar actions = await oso.Actions(user, repository);\nConsole.WriteLine($\"Available actions: {string.Join(\", \", actions)}\");\n\n// With context facts\nvar issue = new Value(\"Issue\", \"123\");\nvar contextActions = await oso.Actions(user, issue,\n    contextFacts: new[] { new[] { \"has_relation\", issue, \"parent\", repository } });\n"
+      summary: Post actions
+      x-summary-source: derived
   /query:
     post:
       tags:
@@ -204,6 +212,8 @@ paths:
       deprecated: true
       security:
       - ApiKey: []
+      summary: Post query
+      x-summary-source: derived
   /evaluate_query:
     post:
       tags:
@@ -253,8 +263,76 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Basic query building\nvar actor = new Value(\"User\", \"alice\");\nvar repository = new Value(\"Repository\", \"anvils\");\nvar query = oso.BuildQuery(\"allow\", actor, \"read\", repository);\nvar result = await query.Evaluate(repository);\n\n// Add constraints with 'And'\nvar folder = new Value(\"Folder\", \"docs\");\nvar constrainedQuery = oso.BuildQuery(\"allow\", actor, \"read\", repository)\n    .And(\"has_relation\", repository, \"folder\", folder);\n\n// Different evaluation modes\nbool exists = await query.Evaluate();                          // Boolean\nvar actions = await query.Evaluate(\"action\");                  // Single variable\nvar pairs = await query.Evaluate(new[] { \"action\", \"repository\" }); // Tuple variables\n"
+      summary: Post evaluate query
+      x-summary-source: derived
 components:
   schemas:
+    QueryResult:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+    TypedId:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+    Constraint:
+      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          description: The type of the variable.
+          type: string
+        ids:
+          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    Value:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
+    AuthorizeResourcesResult:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
     ListResult:
       type: object
       required:
@@ -267,85 +345,10 @@ components:
             type: string
         next_page_token:
           description: Optional token for fetching the next page of results. Present when more results are available.
-          type: string
-          nullable: true
-    Constraint:
-      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          description: The type of the variable.
-          type: string
-        ids:
-          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
-          type: array
-          items:
-            type: string
-          nullable: true
-    ApiError:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-    ListQuery:
-      type: object
-      required:
-      - action
-      - actor_id
-      - actor_type
-      - resource_type
-      - page_size
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        action:
-          type: string
-        resource_type:
-          type: string
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-        page_size:
-          description: Required. Page size for pagination. Must be at least 10,000. Results will be paginated and a `next_page_token` will be included in the response if more results are available. Ignored when `page_token` is provided, since the page size is determined by the original request.
-          default: 10000
-          type: integer
-          format: uint
-          minimum: 10000
-        page_token:
-          description: Page token for fetching subsequent pages of results. Use the `next_page_token` from a previous response. When provided, `page_size` is ignored.
-          default: null
-          type: string
-          nullable: true
-    ActionsQuery:
-      type: object
-      required:
-      - actor_id
-      - actor_type
-      - resource_id
-      - resource_type
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        resource_type:
-          type: string
-        resource_id:
-          type: string
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-    AuthorizeResourcesResult:
+          type:
+          - string
+          - 'null'
+    ActionsResult:
       type: object
       required:
       - results
@@ -353,7 +356,16 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Value'
+            type: string
+    QueryResultDeprecated:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
     Query:
       description: A generic query comprising 1+ predicates conjuncted together.
       type: object
@@ -400,25 +412,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConcreteFact'
-    TypedId:
-      type: object
-      required:
-      - id
-      - type
-      properties:
-        type:
-          type: string
-        id:
-          type: string
-    ActionsResult:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            type: string
     QueryDeprecated:
       type: object
       required:
@@ -431,6 +424,61 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Fact'
+    ActionsQuery:
+      type: object
+      required:
+      - actor_id
+      - actor_type
+      - resource_id
+      - resource_type
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    ListQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resource_type
+      - page_size
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resource_type:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+        page_size:
+          description: Required. Page size for pagination. Must be at least 10,000. Results will be paginated and a `next_page_token` will be included in the response if more results are available. Ignored when `page_token` is provided, since the page size is determined by the original request.
+          default: 10000
+          type: integer
+          format: uint
+          minimum: 10000
+        page_token:
+          description: Page token for fetching subsequent pages of results. Use the `next_page_token` from a previous response. When provided, `page_size` is ignored.
+          default: null
+          type:
+          - string
+          - 'null'
     AuthorizeQuery:
       type: object
       required:
@@ -455,15 +503,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Fact'
-    Value:
+    Fact:
+      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
       type: object
+      required:
+      - args
+      - predicate
       properties:
-        type:
+        predicate:
           type: string
-          nullable: true
-        id:
-          type: string
-          nullable: true
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
     AuthorizeResult:
       type: object
       required:
@@ -471,15 +523,22 @@ components:
       properties:
         allowed:
           type: boolean
-    QueryResultDeprecated:
+    ConcreteFact:
+      description: 'A specific piece of authorization-relevant data, ie: a fact.
+
+
+        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
       type: object
       required:
-      - results
+      - args
+      - predicate
       properties:
-        results:
+        predicate:
+          type: string
+        args:
           type: array
           items:
-            $ref: '#/components/schemas/Fact'
+            $ref: '#/components/schemas/TypedId'
     AuthorizeResourcesQuery:
       type: object
       required:
@@ -503,47 +562,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Fact'
-    QueryResult:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: string
-              nullable: true
-    Fact:
-      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
-      type: object
-      required:
-      - args
-      - predicate
-      properties:
-        predicate:
-          type: string
-        args:
-          type: array
-          items:
-            $ref: '#/components/schemas/Value'
-    ConcreteFact:
-      description: 'A specific piece of authorization-relevant data, ie: a fact.
-
-
-        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
-      type: object
-      required:
-      - args
-      - predicate
-      properties:
-        predicate:
-          type: string
-        args:
-          type: array
-          items:
-            $ref: '#/components/schemas/TypedId'
   securitySchemes:
     ApiKey:
       description: Requires an API key to access.

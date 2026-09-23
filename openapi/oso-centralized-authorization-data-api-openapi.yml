@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Oso Cloud HTTP Centralized Authorization Data API
   version: 0.1.0
-  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/'
+  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H "Authorization: Bearer $OSO_AUTH" https://cloud.osohq.com/api/'
 servers:
 - url: https://api.osohq.com/api/
 tags:
@@ -15,7 +15,7 @@ paths:
       description: 'Adds a new fact.
 
 
-        DEPRECATED: Prefer `POST /batch` with payload `[{"inserts": [<fact>]}]`.'
+        DEPRECATED: Prefer `POST /batch` with payload `[{"inserts": []}]`.'
       operationId: post_facts
       requestBody:
         content:
@@ -106,13 +106,15 @@ paths:
           await oso.Insert("has_role", user, "maintainer", repo);
 
           '
+      summary: Post facts
+      x-summary-source: derived
     delete:
       tags:
       - Centralized Authorization Data
       description: 'Deletes a fact. Does not throw an error when the fact is not found.
 
 
-        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": [<fact>]}]`.'
+        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": []}]`.'
       operationId: delete_facts
       requestBody:
         content:
@@ -218,6 +220,8 @@ paths:
           await oso.Delete("has_role", user, null, null);  // All roles for user
 
           '
+      summary: Delete facts
+      x-summary-source: derived
   /bulk_load:
     post:
       tags:
@@ -225,7 +229,7 @@ paths:
       description: 'Adds many facts at once.
 
 
-        DEPRECATED: Prefer `POST /batch` with payload `[{"inserts": <bulk_data>}]`.'
+        DEPRECATED: Prefer `POST /batch` with payload `[{"inserts": }]`.'
       operationId: post_bulk_load
       requestBody:
         content:
@@ -251,6 +255,8 @@ paths:
       deprecated: true
       security:
       - ApiKey: []
+      summary: Post bulk load
+      x-summary-source: derived
   /bulk_delete:
     post:
       tags:
@@ -258,7 +264,7 @@ paths:
       description: 'Delete many facts in a single transaction.
 
 
-        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": <bulk_data>}]`.'
+        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": }]`.'
       operationId: post_bulk_delete
       requestBody:
         content:
@@ -284,6 +290,8 @@ paths:
       deprecated: true
       security:
       - ApiKey: []
+      summary: Post bulk delete
+      x-summary-source: derived
   /bulk:
     post:
       tags:
@@ -291,7 +299,7 @@ paths:
       description: 'Deletes and adds many facts in one atomic transaction. The deletions are performed before the adds. `null` can be used as a wildcard in facts in delete. Does not throw an error when the facts to delete are not found.
 
 
-        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": <bulk.delete>}, {"inserts": <bulk.tell>}]`.'
+        DEPRECATED: Prefer `POST /batch` with payload `[{"deletes": }, {"inserts": }]`.'
       operationId: post_bulk
       requestBody:
         content:
@@ -315,6 +323,8 @@ paths:
       deprecated: true
       security:
       - ApiKey: []
+      summary: Post bulk
+      x-summary-source: derived
   /batch:
     post:
       tags:
@@ -363,6 +373,8 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Batch multiple operations\nvar user = new Value(\"User\", \"alice\");\nvar org = new Value(\"Organization\", \"acme\");\nvar repo = new Value(\"Repository\", \"anvils\");\n\nawait oso.Batch(tx => {\n    // Insert new facts\n    tx.Insert(\"has_role\", user, \"owner\", org);\n    tx.Insert(\"has_permission\", user, \"admin\", repo);\n    \n    // Delete old facts\n    tx.Delete(\"has_role\", user, \"maintainer\", repo);\n    tx.Delete(\"has_role\", user, \"member\", org);\n});\n"
+      summary: Post batch
+      x-summary-source: derived
   /clear_data:
     post:
       tags:
@@ -383,16 +395,11 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
       - ApiKey: []
+      summary: Clear data
+      x-summary-source: derived
 components:
   schemas:
     ApiError:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-    ApiResult:
       type: object
       required:
       - message
@@ -403,11 +410,13 @@ components:
       type: object
       properties:
         type:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
     Bulk:
       type: object
       required:
@@ -441,6 +450,13 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Fact'
+    ApiResult:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
     Fact:
       description: 'A pattern object for matching authorization-relevant data, ie: facts.'
       type: object

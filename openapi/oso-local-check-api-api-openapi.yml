@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Oso Cloud HTTP Centralized Authorization Data Local Check API API
+  title: Oso Cloud HTTP Local Check API
   version: 0.1.0
-  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H &quot;Authorization: Bearer $OSO_AUTH&quot; https://cloud.osohq.com/api/'
+  description: 'Oso Cloud exposes an HTTP API that you can use to make queries directly, without using one of the clients.For endpoints that require authentication, pass your API key as an HTTP Bearer Auth payload.For example, using curl: curl -H "Authorization: Bearer $OSO_AUTH" https://cloud.osohq.com/api/'
 servers:
 - url: https://api.osohq.com/api/
 tags:
@@ -157,6 +157,8 @@ paths:
           Console.WriteLine($"Available actions: {string.Join(", ", actions)}");
 
           '
+      summary: Post actions query
+      x-summary-source: derived
   /authorize_query:
     post:
       tags:
@@ -227,6 +229,8 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate authorization check SQL\nvar alice = new Value(\"User\", \"alice\");\nvar issue = new Value(\"Issue\", \"123\");\nstring query = await oso.AuthorizeLocal(alice, \"read\", issue);\n\n// Execute with Entity Framework\nbool authorized = await context.Database.SqlQueryRaw<bool>(query).FirstAsync();\n\nif (!authorized) {\n    throw new UnauthorizedAccessException(\"Access denied\");\n}\n"
+      summary: Post authorize query
+      x-summary-source: derived
   /list_query:
     post:
       tags:
@@ -295,6 +299,8 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\nusing Microsoft.EntityFrameworkCore;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate SQL condition for authorized resources\nvar alice = new Value(\"User\", \"alice\");\nstring sqlCondition = await oso.ListLocal(alice, \"read\", \"Issue\", \"id\");\n\n// Use with Entity Framework\nvar authorizedIssues = await context.Issues\n    .FromSqlRaw($\"SELECT * FROM Issues WHERE {sqlCondition}\")\n    .ToListAsync();\n\nConsole.WriteLine($\"Found {authorizedIssues.Count} authorized issues\");\n"
+      summary: Post list query
+      x-summary-source: derived
   /evaluate_query_local:
     post:
       tags:
@@ -341,36 +347,26 @@ paths:
       - lang: csharp
         label: C#
         source: "using OsoCloud;\nusing System.Collections.Generic;\n\nstring? apiKey = Environment.GetEnvironmentVariable(\"OSO_CLOUD_API_KEY\");\nvar oso = new Oso(\"https://api.osohq.com\", apiKey);\n\n// Generate SQL for field-level authorization\nvar actor = new Value(\"User\", \"alice\");\nvar resource = new Value(\"Issue\", \"123\");\nstring field = \"description\";\n\nstring sqlQuery = await oso.BuildQuery(\"allow_field\", actor, \"read\", resource, field)\n    .EvaluateLocalSelect(new Dictionary<string, string> { { \"field_name\", field } });\n\n// Execute field authorization query\nvar fieldResult = await context.Database.SqlQueryRaw<object>(sqlQuery).ToListAsync();\n"
+      summary: Post evaluate query local
+      x-summary-source: derived
 components:
   schemas:
-    ApiError:
+    Constraint:
+      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
       type: object
       required:
-      - message
+      - type
       properties:
-        message:
+        type:
+          description: The type of the variable.
           type: string
-    ActionsQuery:
-      type: object
-      required:
-      - actor_id
-      - actor_type
-      - resource_id
-      - resource_type
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        resource_type:
-          type: string
-        resource_id:
-          type: string
-        context_facts:
-          default: []
-          type: array
+        ids:
+          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
+          type:
+          - array
+          - 'null'
           items:
-            $ref: '#/components/schemas/Fact'
+            type: string
     LocalQuery:
       type: object
       required:
@@ -397,21 +393,114 @@ components:
           type: string
         data_bindings:
           type: string
-    Constraint:
-      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
+    LocalQueryResult:
       type: object
       required:
+      - sql
+      properties:
+        sql:
+          type: string
+    ActionsQuery:
+      type: object
+      required:
+      - actor_id
+      - actor_type
+      - resource_id
+      - resource_type
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    ListQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resource_type
+      - page_size
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resource_type:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+        page_size:
+          description: Required. Page size for pagination. Must be at least 10,000. Results will be paginated and a `next_page_token` will be included in the response if more results are available. Ignored when `page_token` is provided, since the page size is determined by the original request.
+          default: 10000
+          type: integer
+          format: uint
+          minimum: 10000
+        page_token:
+          description: Page token for fetching subsequent pages of results. Use the `next_page_token` from a previous response. When provided, `page_size` is ignored.
+          default: null
+          type:
+          - string
+          - 'null'
+    LocalActionsResult:
+      type: object
+      required:
+      - sql
+      properties:
+        sql:
+          type: string
+    LocalQueryMode:
+      oneOf:
+      - type: object
+        required:
+        - mode
+        - query_vars_to_output_column_names
+        properties:
+          mode:
+            type: string
+            enum:
+            - select
+          query_vars_to_output_column_names:
+            type: object
+            additionalProperties:
+              type: string
+      - type: object
+        required:
+        - mode
+        - output_column_name
+        - query_var
+        properties:
+          mode:
+            type: string
+            enum:
+            - filter
+          query_var:
+            type: string
+          output_column_name:
+            type: string
+    TypedId:
+      type: object
+      required:
+      - id
       - type
       properties:
         type:
-          description: The type of the variable.
           type: string
-        ids:
-          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
-          type: array
-          items:
-            type: string
-          nullable: true
+        id:
+          type: string
     LocalActionsQuery:
       type: object
       required:
@@ -421,13 +510,6 @@ components:
         query:
           $ref: '#/components/schemas/ActionsQuery'
         data_bindings:
-          type: string
-    LocalListResult:
-      type: object
-      required:
-      - sql
-      properties:
-        sql:
           type: string
     Query:
       description: A generic query comprising 1+ predicates conjuncted together.
@@ -475,25 +557,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConcreteFact'
-    LocalAuthQuery:
+    LocalAuthResult:
       type: object
       required:
-      - data_bindings
-      - query
+      - sql
       properties:
-        query:
-          $ref: '#/components/schemas/AuthorizeQuery'
-        data_bindings:
+        sql:
           type: string
-    Value:
-      type: object
-      properties:
-        type:
-          type: string
-          nullable: true
-        id:
-          type: string
-          nullable: true
     Fact:
       description: 'A pattern object for matching authorization-relevant data, ie: facts.'
       type: object
@@ -507,93 +577,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Value'
-    LocalQueryResult:
+    LocalAuthQuery:
       type: object
       required:
-      - sql
+      - data_bindings
+      - query
       properties:
-        sql:
+        query:
+          $ref: '#/components/schemas/AuthorizeQuery'
+        data_bindings:
           type: string
-    TypedId:
+    ApiError:
       type: object
       required:
-      - id
-      - type
+      - message
+      properties:
+        message:
+          type: string
+    Value:
+      type: object
       properties:
         type:
-          type: string
+          type:
+          - string
+          - 'null'
         id:
-          type: string
-    LocalAuthResult:
-      type: object
-      required:
-      - sql
-      properties:
-        sql:
-          type: string
-    LocalQueryMode:
-      oneOf:
-      - type: object
-        required:
-        - mode
-        - query_vars_to_output_column_names
-        properties:
-          mode:
-            type: string
-            enum:
-            - select
-          query_vars_to_output_column_names:
-            type: object
-            additionalProperties:
-              type: string
-      - type: object
-        required:
-        - mode
-        - output_column_name
-        - query_var
-        properties:
-          mode:
-            type: string
-            enum:
-            - filter
-          query_var:
-            type: string
-          output_column_name:
-            type: string
-    ListQuery:
-      type: object
-      required:
-      - action
-      - actor_id
-      - actor_type
-      - resource_type
-      - page_size
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        action:
-          type: string
-        resource_type:
-          type: string
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-        page_size:
-          description: Required. Page size for pagination. Must be at least 10,000. Results will be paginated and a `next_page_token` will be included in the response if more results are available. Ignored when `page_token` is provided, since the page size is determined by the original request.
-          default: 10000
-          type: integer
-          format: uint
-          minimum: 10000
-        page_token:
-          description: Page token for fetching subsequent pages of results. Use the `next_page_token` from a previous response. When provided, `page_size` is ignored.
-          default: null
-          type: string
-          nullable: true
-    LocalActionsResult:
+          type:
+          - string
+          - 'null'
+    LocalListResult:
       type: object
       required:
       - sql
