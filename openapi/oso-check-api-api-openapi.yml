@@ -267,105 +267,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    QueryResult:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-    TypedId:
-      type: object
-      required:
-      - id
-      - type
-      properties:
-        type:
-          type: string
-        id:
-          type: string
-    Constraint:
-      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          description: The type of the variable.
-          type: string
-        ids:
-          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-    ApiError:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-    Value:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
-    AuthorizeResourcesResult:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Value'
-    ListResult:
-      type: object
-      required:
-      - results
-      - next_page_token
-      properties:
-        results:
-          type: array
-          items:
-            type: string
-        next_page_token:
-          description: Optional token for fetching the next page of results. Present when more results are available.
-          type:
-          - string
-          - 'null'
-    ActionsResult:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            type: string
-    QueryResultDeprecated:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
     Query:
       description: A generic query comprising 1+ predicates conjuncted together.
       type: object
@@ -412,6 +313,137 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConcreteFact'
+    AuthorizeResourcesQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resources
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    Constraint:
+      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          description: The type of the variable.
+          type: string
+        ids:
+          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+    Fact:
+      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+    QueryResultDeprecated:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    ActionsResult:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            type: string
+    TypedId:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+    Value:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
+    ConcreteFact:
+      description: 'A specific piece of authorization-relevant data, ie: a fact.
+
+
+        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/TypedId'
+    AuthorizeQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resource_id
+      - resource_type
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
     QueryDeprecated:
       type: object
       required:
@@ -445,6 +477,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Fact'
+    ListResult:
+      type: object
+      required:
+      - results
+      - next_page_token
+      properties:
+        results:
+          type: array
+          items:
+            type: string
+        next_page_token:
+          description: Optional token for fetching the next page of results. Present when more results are available.
+          type:
+          - string
+          - 'null'
     ListQuery:
       type: object
       required:
@@ -479,43 +526,6 @@ components:
           type:
           - string
           - 'null'
-    AuthorizeQuery:
-      type: object
-      required:
-      - action
-      - actor_id
-      - actor_type
-      - resource_id
-      - resource_type
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        action:
-          type: string
-        resource_type:
-          type: string
-        resource_id:
-          type: string
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-    Fact:
-      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
-      type: object
-      required:
-      - args
-      - predicate
-      properties:
-        predicate:
-          type: string
-        args:
-          type: array
-          items:
-            $ref: '#/components/schemas/Value'
     AuthorizeResult:
       type: object
       required:
@@ -523,45 +533,35 @@ components:
       properties:
         allowed:
           type: boolean
-    ConcreteFact:
-      description: 'A specific piece of authorization-relevant data, ie: a fact.
-
-
-        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
+    AuthorizeResourcesResult:
       type: object
       required:
-      - args
-      - predicate
+      - results
       properties:
-        predicate:
-          type: string
-        args:
-          type: array
-          items:
-            $ref: '#/components/schemas/TypedId'
-    AuthorizeResourcesQuery:
-      type: object
-      required:
-      - action
-      - actor_id
-      - actor_type
-      - resources
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        action:
-          type: string
-        resources:
+        results:
           type: array
           items:
             $ref: '#/components/schemas/Value'
-        context_facts:
-          default: []
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    QueryResult:
+      type: object
+      required:
+      - results
+      properties:
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/Fact'
+            type: object
+            additionalProperties:
+              type:
+              - string
+              - 'null'
   securitySchemes:
     ApiKey:
       description: Requires an API key to access.
