@@ -406,6 +406,38 @@ components:
       properties:
         message:
           type: string
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    Bulk:
+      type: object
+      required:
+      - delete
+      - tell
+      properties:
+        delete:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+        tell:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    Value:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
     Fact:
       description: 'A pattern object for matching authorization-relevant data, ie: facts.'
       type: object
@@ -438,38 +470,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Fact'
-    Value:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
-    Bulk:
-      type: object
-      required:
-      - delete
-      - tell
-      properties:
-        delete:
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-        tell:
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-    ApiError:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
   securitySchemes:
     ApiKey:
       description: Requires an API key to access.
