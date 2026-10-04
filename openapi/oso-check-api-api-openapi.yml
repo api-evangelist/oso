@@ -267,7 +267,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    QueryResult:
+    QueryResultDeprecated:
       type: object
       required:
       - results
@@ -275,11 +275,96 @@ components:
         results:
           type: array
           items:
-            type: object
-            additionalProperties:
-              type:
-              - string
-              - 'null'
+            $ref: '#/components/schemas/Fact'
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    AuthorizeResourcesQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resources
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    QueryDeprecated:
+      type: object
+      required:
+      - fact
+      properties:
+        fact:
+          $ref: '#/components/schemas/Fact'
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    AuthorizeQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resource_id
+      - resource_type
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    AuthorizeResult:
+      type: object
+      required:
+      - allowed
+      properties:
+        allowed:
+          type: boolean
+    ConcreteFact:
+      description: 'A specific piece of authorization-relevant data, ie: a fact.
+
+
+        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/TypedId'
     ListQuery:
       type: object
       required:
@@ -314,37 +399,15 @@ components:
           type:
           - string
           - 'null'
-    AuthorizeResult:
+    AuthorizeResourcesResult:
       type: object
       required:
-      - allowed
+      - results
       properties:
-        allowed:
-          type: boolean
-    AuthorizeQuery:
-      type: object
-      required:
-      - action
-      - actor_id
-      - actor_type
-      - resource_id
-      - resource_type
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        action:
-          type: string
-        resource_type:
-          type: string
-        resource_id:
-          type: string
-        context_facts:
-          default: []
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/Fact'
+            $ref: '#/components/schemas/Value'
     Query:
       description: A generic query comprising 1+ predicates conjuncted together.
       type: object
@@ -391,54 +454,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConcreteFact'
-    ActionsResult:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            type: string
-    ApiError:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-    AuthorizeResourcesResult:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Value'
-    AuthorizeResourcesQuery:
-      type: object
-      required:
-      - action
-      - actor_id
-      - actor_type
-      - resources
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        action:
-          type: string
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/Value'
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
     ListResult:
       type: object
       required:
@@ -454,33 +469,19 @@ components:
           type:
           - string
           - 'null'
-    ConcreteFact:
-      description: 'A specific piece of authorization-relevant data, ie: a fact.
-
-
-        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
+    QueryResult:
       type: object
       required:
-      - args
-      - predicate
+      - results
       properties:
-        predicate:
-          type: string
-        args:
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/TypedId'
-    Value:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
+            type: object
+            additionalProperties:
+              type:
+              - string
+              - 'null'
     Constraint:
       description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
       type: object
@@ -497,50 +498,6 @@ components:
           - 'null'
           items:
             type: string
-    QueryResultDeprecated:
-      type: object
-      required:
-      - results
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-    TypedId:
-      type: object
-      required:
-      - id
-      - type
-      properties:
-        type:
-          type: string
-        id:
-          type: string
-    QueryDeprecated:
-      type: object
-      required:
-      - fact
-      properties:
-        fact:
-          $ref: '#/components/schemas/Fact'
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-    Fact:
-      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
-      type: object
-      required:
-      - args
-      - predicate
-      properties:
-        predicate:
-          type: string
-        args:
-          type: array
-          items:
-            $ref: '#/components/schemas/Value'
     ActionsQuery:
       type: object
       required:
@@ -562,6 +519,49 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Fact'
+    TypedId:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+    Fact:
+      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+    ActionsResult:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            type: string
+    Value:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
   securitySchemes:
     ApiKey:
       description: Requires an API key to access.

@@ -399,13 +399,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ApiResult:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
     ApiError:
       type: object
       required:
@@ -413,44 +406,13 @@ components:
       properties:
         message:
           type: string
-    Bulk:
+    ApiResult:
       type: object
       required:
-      - delete
-      - tell
+      - message
       properties:
-        delete:
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-        tell:
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-    Value:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
-    Fact:
-      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
-      type: object
-      required:
-      - args
-      - predicate
-      properties:
-        predicate:
+        message:
           type: string
-        args:
-          type: array
-          items:
-            $ref: '#/components/schemas/Value'
     FactChangeset:
       description: A grouped run of facts to insert or delete. Inserted facts must contain concrete fact args, but deleted facts may contain wildcards.
       anyOf:
@@ -470,6 +432,44 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Fact'
+    Bulk:
+      type: object
+      required:
+      - delete
+      - tell
+      properties:
+        delete:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+        tell:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    Fact:
+      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+    Value:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
   securitySchemes:
     ApiKey:
       description: Requires an API key to access.

@@ -232,13 +232,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ApiResult:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
     Policy:
       type: object
       required:
@@ -250,28 +243,13 @@ components:
           - 'null'
         src:
           type: string
-    PolicyFailure:
-      description: All known failure modes for a submitted policy test. Encountering any of these scenarios means the policy test has failed.
-      oneOf:
-      - description: Polar file failed validation.
-        type: string
-        enum:
-        - ValidationFailed
-      - description: An assertion failed in an executed test.
-        type: string
-        enum:
-        - AssertionFailed
-      - description: Server hit an unexpected error.
-        type: string
-        enum:
-        - ServerError
-    GetPolicyMetadataResult:
+    ApiError:
       type: object
       required:
-      - metadata
+      - message
       properties:
-        metadata:
-          $ref: '#/components/schemas/PolicyMetadata'
+        message:
+          type: string
     ResourceBlockData:
       type: object
       required:
@@ -291,43 +269,55 @@ components:
           type: object
           additionalProperties:
             type: string
-    ApiError:
+    GetPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/Policy'
+    PolicyFailure:
+      description: All known failure modes for a submitted policy test. Encountering any of these scenarios means the policy test has failed.
+      oneOf:
+      - description: Polar file failed validation.
+        type: string
+        enum:
+        - ValidationFailed
+      - description: An assertion failed in an executed test.
+        type: string
+        enum:
+        - AssertionFailed
+      - description: Server hit an unexpected error.
+        type: string
+        enum:
+        - ServerError
+    ApiResult:
       type: object
       required:
       - message
       properties:
         message:
           type: string
-    PolicyTestResult:
-      description: Result of a Policy test API request. Sent to `oso-cloud` CLI as JSON.
+    PolicyError:
+      description: Error report for a failed Polar policy test, to be displayed to user. Sent to `oso-cloud` CLI as JSON.
       type: object
       required:
-      - errors
-      - success
-      - tests
+      - error_type
+      - message
       properties:
-        success:
-          description: Did the policy test succeed?
-          type: boolean
-        errors:
-          description: What errors did we encounter?
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyError'
-        tests:
-          description: What tests did we execute?
-          type: array
-          items:
-            $ref: '#/components/schemas/TestSummary'
-    PolicyMetadata:
+        error_type:
+          description: Type of error encountered.
+          allOf:
+          - $ref: '#/components/schemas/PolicyFailure'
+        message:
+          description: Error message to display to the user.
+          type: string
+    GetPolicyMetadataResult:
       type: object
       required:
-      - resources
+      - metadata
       properties:
-        resources:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ResourceBlockData'
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
     SavePolicyError:
       oneOf:
       - type: object
@@ -371,20 +361,15 @@ components:
             type: string
           test_results:
             $ref: '#/components/schemas/PolicyTestResult'
-    PolicyError:
-      description: Error report for a failed Polar policy test, to be displayed to user. Sent to `oso-cloud` CLI as JSON.
+    PolicyMetadata:
       type: object
       required:
-      - error_type
-      - message
+      - resources
       properties:
-        error_type:
-          description: Type of error encountered.
-          allOf:
-          - $ref: '#/components/schemas/PolicyFailure'
-        message:
-          description: Error message to display to the user.
-          type: string
+        resources:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ResourceBlockData'
     TestSummary:
       description: Results of executing a single test. Sent to `oso-cloud` CLI as JSON.
       type: object
@@ -406,12 +391,27 @@ components:
           type: integer
           format: uint
           minimum: 0
-    GetPolicyResult:
+    PolicyTestResult:
+      description: Result of a Policy test API request. Sent to `oso-cloud` CLI as JSON.
       type: object
+      required:
+      - errors
+      - success
+      - tests
       properties:
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/Policy'
+        success:
+          description: Did the policy test succeed?
+          type: boolean
+        errors:
+          description: What errors did we encounter?
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyError'
+        tests:
+          description: What tests did we execute?
+          type: array
+          items:
+            $ref: '#/components/schemas/TestSummary'
   securitySchemes:
     ApiKey:
       description: Requires an API key to access.
