@@ -1,0 +1,54 @@
+slug: oso
+provider: Oso Cloud
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Check API
+  spec_file: oso-check-api-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.92
+  evidence: POST /authorize  Post authorize; schemas AuthorizeQuery, AuthorizeResult, ActionsQuery — 'query
+    permissions at runtime'
+  reason: Runtime permission checks and authorization queries are plainly Identity & Access Management.
+- tag: Local Check API
+  spec_file: oso-local-check-api-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: POST /authorize_query; schemas LocalAuthQuery, LocalAuthResult, LocalListQuery
+  reason: Same authorization-decision capability executed against a local data store; clearly access control
+    enforcement.
+- tag: Centralized Authorization Data
+  spec_file: oso-centralized-authorization-data-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /facts, POST /bulk_load, POST /clear_data; schemas Fact, FactChangeset — 'manage authorization
+    facts'
+  reason: Managing the authorization fact store that backs RBAC/ReBAC access control decisions is Identity
+    & Access Management. Data-management reading is secondary; the data is specifically authorization
+    data.
+- tag: Policy
+  spec_file: oso-policy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /policy, POST /policy; schemas Policy, PolicyMetadata, PolicyTestResult — 'defining and
+    enforcing relationship-based access control policies'
+  reason: Authorization policy authoring and retrieval for an access-control engine — IAM, not corporate
+    Policy Management (BC-130.20), which concerns corporate policy lifecycle.

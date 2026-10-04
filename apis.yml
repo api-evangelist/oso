@@ -105,6 +105,9 @@ apis:
   - type: Authentication
     url: https://www.osohq.com/docs/app-integration/oso-cloud-configuration/api-keys
 common:
+- type: CapabilityMap
+  url: capabilities/oso-capability-edges.yml
+  name: Oso Cloud Business Capability Map
 - type: AgenticAccess
   url: agentic-access/oso-agentic-access.yml
 - type: TrustCenter
