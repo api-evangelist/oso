@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Oso Cloud Plans and Pricing
 description: >-
   Oso Cloud offers tiered pricing plans for its authorization-as-a-service
@@ -101,3 +105,35 @@ notes: >-
   Developer plan is available. Contact Oso Cloud sales for the most current
   pricing details. The original 2022 pricing showed a Pro plan at $149/month
   and Enterprise at $249/month; current pricing may differ.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - subscription
+  units: []
+  plans:
+  - name: Developer
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Startup
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
+  - name: Growth
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
+  - name: Enterprise
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
