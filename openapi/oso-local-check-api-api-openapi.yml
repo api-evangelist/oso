@@ -351,7 +351,41 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    LocalActionsResult:
+    ApiError:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    ConcreteFact:
+      description: 'A specific piece of authorization-relevant data, ie: a fact.
+
+
+        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/TypedId'
+    Value:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
+    LocalListResult:
       type: object
       required:
       - sql
@@ -365,19 +399,76 @@ components:
       properties:
         sql:
           type: string
-    Fact:
-      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
+    LocalListQuery:
       type: object
       required:
-      - args
-      - predicate
+      - column
+      - data_bindings
+      - query
       properties:
-        predicate:
+        query:
+          $ref: '#/components/schemas/ListQuery'
+        column:
           type: string
-        args:
+        data_bindings:
+          type: string
+    Constraint:
+      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          description: The type of the variable.
+          type: string
+        ids:
+          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+    ListQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resource_type
+      - page_size
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resource_type:
+          type: string
+        context_facts:
+          default: []
           type: array
           items:
-            $ref: '#/components/schemas/Value'
+            $ref: '#/components/schemas/Fact'
+        page_size:
+          description: Required. Page size for pagination. Must be at least 10,000. Results will be paginated and a `next_page_token` will be included in the response if more results are available. Ignored when `page_token` is provided, since the page size is determined by the original request.
+          default: 10000
+          type: integer
+          format: uint
+          minimum: 10000
+        page_token:
+          description: Page token for fetching subsequent pages of results. Use the `next_page_token` from a previous response. When provided, `page_size` is ignored.
+          default: null
+          type:
+          - string
+          - 'null'
+    LocalActionsResult:
+      type: object
+      required:
+      - sql
+      properties:
+        sql:
+          type: string
     TypedId:
       type: object
       required:
@@ -387,30 +478,6 @@ components:
         type:
           type: string
         id:
-          type: string
-    ApiError:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-    LocalListResult:
-      type: object
-      required:
-      - sql
-      properties:
-        sql:
-          type: string
-    LocalAuthQuery:
-      type: object
-      required:
-      - data_bindings
-      - query
-      properties:
-        query:
-          $ref: '#/components/schemas/AuthorizeQuery'
-        data_bindings:
           type: string
     LocalQueryMode:
       oneOf:
@@ -441,25 +508,103 @@ components:
             type: string
           output_column_name:
             type: string
+    ActionsQuery:
+      type: object
+      required:
+      - actor_id
+      - actor_type
+      - resource_id
+      - resource_type
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    LocalAuthQuery:
+      type: object
+      required:
+      - data_bindings
+      - query
+      properties:
+        query:
+          $ref: '#/components/schemas/AuthorizeQuery'
+        data_bindings:
+          type: string
+    LocalActionsQuery:
+      type: object
+      required:
+      - data_bindings
+      - query
+      properties:
+        query:
+          $ref: '#/components/schemas/ActionsQuery'
+        data_bindings:
+          type: string
+    Fact:
+      description: 'A pattern object for matching authorization-relevant data, ie: facts.'
+      type: object
+      required:
+      - args
+      - predicate
+      properties:
+        predicate:
+          type: string
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+    AuthorizeQuery:
+      type: object
+      required:
+      - action
+      - actor_id
+      - actor_type
+      - resource_id
+      - resource_type
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        context_facts:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/Fact'
+    LocalQuery:
+      type: object
+      required:
+      - data_bindings
+      - mode
+      - query
+      properties:
+        query:
+          $ref: '#/components/schemas/Query'
+        data_bindings:
+          type: string
+        mode:
+          $ref: '#/components/schemas/LocalQueryMode'
     LocalAuthResult:
       type: object
       required:
       - sql
       properties:
         sql:
-          type: string
-    LocalListQuery:
-      type: object
-      required:
-      - column
-      - data_bindings
-      - query
-      properties:
-        query:
-          $ref: '#/components/schemas/ListQuery'
-        column:
-          type: string
-        data_bindings:
           type: string
     Query:
       description: A generic query comprising 1+ predicates conjuncted together.
@@ -507,151 +652,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConcreteFact'
-    Constraint:
-      description: Constraints on a variable. All variables must have a type, and they may also be constrained to a set of values.
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          description: The type of the variable.
-          type: string
-        ids:
-          description: The possible values of the variable. `None` means the variable can be any value. `Some(["foo"])` means the variable must be exactly `"foo"`. `Some(["foo", "bar"])` means the variable can be either `"foo"` or `"bar"`. The latter is how we represent `In` expressions in the new Query API.
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-    LocalQuery:
-      type: object
-      required:
-      - data_bindings
-      - mode
-      - query
-      properties:
-        query:
-          $ref: '#/components/schemas/Query'
-        data_bindings:
-          type: string
-        mode:
-          $ref: '#/components/schemas/LocalQueryMode'
-    AuthorizeQuery:
-      type: object
-      required:
-      - action
-      - actor_id
-      - actor_type
-      - resource_id
-      - resource_type
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        action:
-          type: string
-        resource_type:
-          type: string
-        resource_id:
-          type: string
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-    ActionsQuery:
-      type: object
-      required:
-      - actor_id
-      - actor_type
-      - resource_id
-      - resource_type
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        resource_type:
-          type: string
-        resource_id:
-          type: string
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-    LocalActionsQuery:
-      type: object
-      required:
-      - data_bindings
-      - query
-      properties:
-        query:
-          $ref: '#/components/schemas/ActionsQuery'
-        data_bindings:
-          type: string
-    ConcreteFact:
-      description: 'A specific piece of authorization-relevant data, ie: a fact.
-
-
-        `ConcreteFact`s are suitable for storing in the database, since they represent the information in a specific, fully-qualified fact. To represent the set of facts matching a pattern instead, see [`Fact`].'
-      type: object
-      required:
-      - args
-      - predicate
-      properties:
-        predicate:
-          type: string
-        args:
-          type: array
-          items:
-            $ref: '#/components/schemas/TypedId'
-    ListQuery:
-      type: object
-      required:
-      - action
-      - actor_id
-      - actor_type
-      - resource_type
-      - page_size
-      properties:
-        actor_type:
-          type: string
-        actor_id:
-          type: string
-        action:
-          type: string
-        resource_type:
-          type: string
-        context_facts:
-          default: []
-          type: array
-          items:
-            $ref: '#/components/schemas/Fact'
-        page_size:
-          description: Required. Page size for pagination. Must be at least 10,000. Results will be paginated and a `next_page_token` will be included in the response if more results are available. Ignored when `page_token` is provided, since the page size is determined by the original request.
-          default: 10000
-          type: integer
-          format: uint
-          minimum: 10000
-        page_token:
-          description: Page token for fetching subsequent pages of results. Use the `next_page_token` from a previous response. When provided, `page_size` is ignored.
-          default: null
-          type:
-          - string
-          - 'null'
-    Value:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
   securitySchemes:
     ApiKey:
       description: Requires an API key to access.
