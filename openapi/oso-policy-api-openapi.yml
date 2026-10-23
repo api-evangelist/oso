@@ -418,3 +418,9 @@ components:
       type: http
       scheme: bearer
       bearerFormat: Bearer e_0123_123_token0123
+x-provenance:
+  method: harvested
+  publisher: Oso Cloud
+  source: https://www.osohq.com/docs/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
