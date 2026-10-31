@@ -66,52 +66,191 @@
 
 Oso Cloud is an authorization-as-a-service platform that provides a REST API for defining and enforcing relationship-based access control policies. It enables developers to model RBAC, ReBAC, and ABAC authorization patterns, manage authorization facts, and query permissions at runtime with sub-10ms latency and 99.99% availability.
 
-## Links
+**Areas:** Authorization · Access Control · RBAC · ReBAC · ABAC · Permissions · Policy · Security · Identity
 
-- **Website:** https://www.osohq.com
-- **Documentation:** https://www.osohq.com/docs
-- **GitHub Org:** https://github.com/osohq
-- **Blog:** https://www.osohq.com/blog
-- **Pricing:** https://www.osohq.com/pricing
-- **Status:** https://oso.statuspage.io/
-- **LinkedIn:** https://www.linkedin.com/company/osohq
-- **X:** https://x.com/osohq
-- **Changelog:** https://www.osohq.com/docs/changelog/whats-new
+## Oso Cloud on APIs.io
 
-## APIs
+Everything profiled for Oso Cloud is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/oso/](https://apis.io/providers/oso/)** — or go straight to one of the APIs or properties below.
 
-### Oso Cloud Authorization API
+### APIs (4)
 
-Base URL: `https://api.osohq.com/api`
+- [Oso Cloud Centralized Authorization Data API](https://apis.io/apis/oso/oso-centralized-authorization-data-api/) — The Centralized Authorization Data API from Oso Cloud — 6 operation(s) for centralized authorization data.
+- [Oso Cloud Check API](https://apis.io/apis/oso/oso-check-api-api/) — The Check API API from Oso Cloud — 6 operation(s) for check api.
+- [Oso Cloud Local Check API](https://apis.io/apis/oso/oso-local-check-api-api/) — The Local Check API API from Oso Cloud — 4 operation(s) for local check api.
+- [Oso Cloud Policy API](https://apis.io/apis/oso/oso-policy-api/) — The Policy API from Oso Cloud — 2 operation(s) for policy.
 
-Authentication: Bearer token via `Authorization: Bearer <api-key>` header
+### Published properties
 
-Key endpoints:
-- `POST /authorize` — Check if an actor can perform an action on a resource
-- `POST /list` — Get all resource IDs an actor can act on
-- `POST /actions` — Get all actions an actor can perform on a resource
-- `POST /query` — Query predicates with concrete or wildcard arguments
-- `POST /authorize_resources` — Filter multiple resources by permission
-- `GET /policy` — Retrieve the active Polar authorization policy
-- `POST /policy` — Deploy an updated Polar authorization policy
-- `POST /facts` — Add authorization facts
-- `POST /bulk` — Add and delete facts atomically
-- `POST /clear_data` — Clear all authorization data
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## SDKs
+#### Agentic access (1)
 
-- Node.js (v2.x) — https://github.com/osohq/oso-node
-- Python (v2.x) — https://pypi.org/project/oso-cloud/
-- Go (v2.x) — https://github.com/osohq/go-oso-cloud
-- Java (v1.x)
-- Ruby (v1.x)
-- .NET/C# (v1.x)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## Artifacts
+- [Oso Agentic Access](https://apis.io/agentic-access/oso/oso-agentic-access/)
 
-| File | Description |
-|------|-------------|
-| [apis.yml](apis.yml) | APIs.json 0.19 provider index |
-| [plans/oso-plans-pricing.yml](plans/oso-plans-pricing.yml) | API Commons Plans 0.1 — pricing tiers |
-| [rate-limits/oso-rate-limits.yml](rate-limits/oso-rate-limits.yml) | API Commons Rate Limits 0.1 |
-| [finops/oso-finops.yml](finops/oso-finops.yml) | FinOps Framework 1.0 FOCUS-aligned |
+#### JSON Schema (40)
+
+The data models the API reads and writes.
+
+- [ActionsQuery](https://apis.io/schemas/oso/ActionsQuery/)
+- [ActionsResult](https://apis.io/schemas/oso/ActionsResult/)
+- [ApiError](https://apis.io/schemas/oso/ApiError/)
+- [ApiResult](https://apis.io/schemas/oso/ApiResult/)
+- [AuthorizeQuery](https://apis.io/schemas/oso/AuthorizeQuery/)
+- [AuthorizeResourcesQuery](https://apis.io/schemas/oso/AuthorizeResourcesQuery/)
+- [AuthorizeResourcesResult](https://apis.io/schemas/oso/AuthorizeResourcesResult/)
+- [AuthorizeResult](https://apis.io/schemas/oso/AuthorizeResult/)
+- [Bulk](https://apis.io/schemas/oso/Bulk/)
+- [ConcreteFact](https://apis.io/schemas/oso/ConcreteFact/)
+- [Constraint](https://apis.io/schemas/oso/Constraint/)
+- [Fact](https://apis.io/schemas/oso/Fact/)
+- [FactChangeset](https://apis.io/schemas/oso/FactChangeset/)
+- [GetPolicyMetadataResult](https://apis.io/schemas/oso/GetPolicyMetadataResult/)
+- [GetPolicyResult](https://apis.io/schemas/oso/GetPolicyResult/)
+- [ListQuery](https://apis.io/schemas/oso/ListQuery/)
+- [ListResult](https://apis.io/schemas/oso/ListResult/)
+- [LocalActionsQuery](https://apis.io/schemas/oso/LocalActionsQuery/)
+- [LocalActionsResult](https://apis.io/schemas/oso/LocalActionsResult/)
+- [LocalAuthQuery](https://apis.io/schemas/oso/LocalAuthQuery/)
+- [LocalAuthResult](https://apis.io/schemas/oso/LocalAuthResult/)
+- [LocalListQuery](https://apis.io/schemas/oso/LocalListQuery/)
+- [LocalListResult](https://apis.io/schemas/oso/LocalListResult/)
+- [LocalQuery](https://apis.io/schemas/oso/LocalQuery/)
+- [LocalQueryMode](https://apis.io/schemas/oso/LocalQueryMode/)
+- …and 15 more published on APIs.io
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Oso Context](https://apis.io/jsonld/oso/oso-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Oso Cloud Authorization Vocabulary](https://apis.io/vocabularies/oso/oso-vocabulary/)
+
+#### Examples (13)
+
+Example requests and responses.
+
+- [Delete_Facts](https://apis.io/examples/oso/delete_facts/)
+- [Get_Policy_Metadata](https://apis.io/examples/oso/get_policy_metadata/)
+- [Post_Actions](https://apis.io/examples/oso/post_actions/)
+- [Post_Actions_Query](https://apis.io/examples/oso/post_actions_query/)
+- [Post_Authorize](https://apis.io/examples/oso/post_authorize/)
+- [Post_Authorize_Query](https://apis.io/examples/oso/post_authorize_query/)
+- [Post_Batch](https://apis.io/examples/oso/post_batch/)
+- [Post_Evaluate_Query](https://apis.io/examples/oso/post_evaluate_query/)
+- [Post_Evaluate_Query_Local](https://apis.io/examples/oso/post_evaluate_query_local/)
+- [Post_Facts](https://apis.io/examples/oso/post_facts/)
+- [Post_List](https://apis.io/examples/oso/post_list/)
+- [Post_List_Query](https://apis.io/examples/oso/post_list_query/)
+- [Post_Policy](https://apis.io/examples/oso/post_policy/)
+
+#### Collections (4)
+
+Postman and Open Collection request collections.
+
+- [Oso Cloud HTTP Centralized Authorization Data API](https://apis.io/collections/oso/open-oso-centralized-authorization-data-api/)
+- [Oso Cloud HTTP Centralized Authorization Data Check API API](https://apis.io/collections/oso/open-oso-check-api-api/)
+- [Oso Cloud HTTP Centralized Authorization Data Local Check API API](https://apis.io/collections/oso/open-oso-local-check-api-api/)
+- [Oso Cloud HTTP Centralized Authorization Data Policy API](https://apis.io/collections/oso/open-oso-policy-api/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Oso Cloud — jsonschema rules](https://apis.io/rules/oso/oso-jsonschema-spectral-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Oso Authentication](https://apis.io/security/oso/oso-authentication/)
+- [Oso Domain Security](https://apis.io/security/oso/oso-domain-security/)
+- [Oso Trust Center](https://apis.io/security/oso/oso-trust-center/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Oso Plans Pricing](https://apis.io/plans/oso/oso-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Oso Rate Limits](https://apis.io/rate-limits/oso/oso-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Oso Finops](https://apis.io/finops/oso/oso-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.osohq.com)
+- [Documentation](https://www.osohq.com/docs)
+- [Pricing](https://www.osohq.com/pricing)
+- [Changelog](https://www.osohq.com/docs/changelog/whats-new)
+- [Blog](https://www.osohq.com/blog)
+- [Status](https://oso.statuspage.io/)
+
+## API Evangelist rating
+
+**Kin Score 34.4** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 51.7 |
+| Contract governance | 9.8 |
+| Operational transparency | 44.7 |
+| Developer ergonomics | 11.9 |
+| Access clarity | 26.3 |
+
+**Agent readiness 17.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 21.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/oso/](https://apis.io/providers/oso/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Oso Cloud: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/oso/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
